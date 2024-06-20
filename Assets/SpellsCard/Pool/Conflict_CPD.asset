@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339dcb52f8557174e880a6ed098c010b, type: 3}
+  m_Name: Conflict_CPD
+  m_EditorClassIdentifier: 
+  useReferencePoolSize: 1
+  poolName_1: Standard
+  poolRateInt_1: 2
+  poolCardDate_1:
+  - {fileID: 11400000, guid: 9237fa4ed1d971c49a31fd4bd11448d1, type: 2}
+  - {fileID: 11400000, guid: 20e9136e2c963bb4cbfdfe4bb9c0355a, type: 2}
+  - {fileID: 11400000, guid: 1fa4ffcd18b2e2b45b394af1524baa0c, type: 2}
+  - {fileID: 11400000, guid: f720f419b3b8fd7429e55cb979f54c60, type: 2}
+  - {fileID: 11400000, guid: 8bcf063869881ef4ab46d2487481c721, type: 2}
+  - {fileID: 11400000, guid: f720f419b3b8fd7429e55cb979f54c60, type: 2}
+  - {fileID: 11400000, guid: 06c1beface06bfa48bfe016cae2842b5, type: 2}
+  - {fileID: 11400000, guid: 88d39193bd910244bbd4fd3bf977f17b, type: 2}
+  - {fileID: 11400000, guid: de4e38f80e94b6844b94ca2ef0529a75, type: 2}
+  - {fileID: 11400000, guid: e38236d730f02a64a90fe944b5b5ba30, type: 2}
+  poolName_2: Rare
+  poolRateInt_2: 0
+  poolCardDate_2: []
+  poolName_3: combo
+  poolRateInt_3: 0
+  poolCardDate_3: []

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Player_1
+  - Player_2
+  - Player_3
+  - Player_4
+  - Structure
+  - Installation
+  - Enemy
+  - Ground
+  - Search
+  - UnknownPlayer
+  - JoinPlayer
+  - PlayerSpawnPoint
+  - GameManager
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Player_1
+  - Player_2
+  - Player_3
+  - Player_4
+  - 
+  - InstObject
+  - StructureObject
+  - Search
+  - 
+  - Enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

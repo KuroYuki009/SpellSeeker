@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: None
+  m_EditorClassIdentifier: 
+  IDName: None
+  spellName: none
+  imageSprite: {fileID: 21300000, guid: a9509d06e6bc4f648910981acb2397ba, type: 3}
+  manaCostString: 
+  damageString: 0
+  attackOftenString: 
+  manualText: 
+  commentText: 
+  spellPrefab: {fileID: 0}
+  manaCost: 0
+  trashMana: 0
+  primaryDamage: 0
+  secondDamage: 0

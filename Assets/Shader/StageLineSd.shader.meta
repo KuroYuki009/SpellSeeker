@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9a8b827b9d43a1642a6ea84f83e4bef2
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - unity_Lightmaps: {instanceID: 0}
+  - unity_LightmapsInd: {instanceID: 0}
+  - unity_ShadowMasks: {instanceID: 0}
+  nonModifiableTextures:
+  - _SampleTexture2D_8160719f218241dabbe321661faaf004_Texture_1_Texture2D: {instanceID: 0}
+  - _SampleTexture2D_c6ff558bc98048588292232098ae0d9d_Texture_1_Texture2D: {instanceID: 0}
+  - _SampleTexture2D_95ecb58a23644707bdc1e4053cbb0b84_Texture_1_Texture2D: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

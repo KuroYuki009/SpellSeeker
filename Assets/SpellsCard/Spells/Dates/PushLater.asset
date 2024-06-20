@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: PushLater
+  m_EditorClassIdentifier: 
+  IDName: PushLater
+  spellName: "\u30D7\u30C3\u30B7\u30E5\u30EC\u30A4\u30BF\u30FC"
+  imageSprite: {fileID: 21300000, guid: ddd8ab19669358d40b5efcd7536c67db, type: 3}
+  manaCostString: 2
+  damageString: 30
+  attackOftenString: 
+  manualText: "\u5F53\u305F\u3063\u305F\u6575\u3092\n\u4E00\u5B9A\u6642\u9593\u5F8C\u306B\u62BC\u3057\u51FA\u3059\n\u5F3E\u3092\u767A\u5C04\u3059\u308B\u3002"
+  commentText: 
+  spellPrefab: {fileID: 979851219669035799, guid: 0e8bf1cf25cbdc9459f0aeeca75db01c,
+    type: 3}
+  manaCost: 2
+  trashMana: 1
+  primaryDamage: 30
+  secondDamage: 0

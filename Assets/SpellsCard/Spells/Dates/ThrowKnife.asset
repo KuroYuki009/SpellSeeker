@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: ThrowKnife
+  m_EditorClassIdentifier: 
+  IDName: ThrowKnife
+  spellName: "\u30B9\u30ED\u30FC\u30CA\u30A4\u30D5"
+  imageSprite: {fileID: 21300000, guid: c115f24861578314580ab38b9842fb02, type: 3}
+  manaCostString: 2
+  damageString: 60
+  attackOftenString: 
+  manualText: "\u5F53\u305F\u308B\u3068<color=#ffb700>\u8106\u5F31\u72B6\u614B</color>\u306B\u306A\u308B\n\u30CA\u30A4\u30D5\u3092\u524D\u65B9\u306B\u6295\u3052\u308B\u3002"
+  commentText: "// \u30CA\u30A4\u30D5\u3060\u30C3 !"
+  spellPrefab: {fileID: 820710587670053371, guid: fdfeef2163cabde41ba55d951312618e,
+    type: 3}
+  manaCost: 2
+  trashMana: 1
+  primaryDamage: 60
+  secondDamage: 0

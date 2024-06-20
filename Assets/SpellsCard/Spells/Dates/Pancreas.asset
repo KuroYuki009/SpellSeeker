@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: Pancreas
+  m_EditorClassIdentifier: 
+  IDName: Pancreas
+  spellName: "\u30D1\u30F3\u30AF\u30EA\u30A2\u30B9"
+  imageSprite: {fileID: 0}
+  manaCostString: 2
+  damageString: 60
+  attackOftenString: 
+  manualText: "\u76F4\u7DDA\u4E0A\u306E\u6575\u306B\n\u5F53\u305F\u308B\u3068\u30AB\u30FC\u30C9\u3092\u524A\u9664\u3059\u308B\n\u653B\u6483\u3092\u3059\u308B\u3002\n<color=#ffb700>\u79FB\u52D5\u4E0D\u53EF</color>\n<color=#bbbbbb>\u5BFE\u7ACB\u5C02\u7528</color>"
+  commentText: "// \u5206\u89E3!!"
+  spellPrefab: {fileID: 0}
+  manaCost: 2
+  trashMana: 1
+  primaryDamage: 0
+  secondDamage: 0

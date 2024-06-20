@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: ShiftDash
+  m_EditorClassIdentifier: 
+  IDName: ShiftDash
+  spellName: "\u30B7\u30D5\u30C8\u30C0\u30C3\u30B7\u30E5"
+  imageSprite: {fileID: 21300000, guid: 6356ea60b99931e4cb011b556a226362, type: 3}
+  manaCostString: 1
+  damageString: 0
+  attackOftenString: 
+  manualText: "\u5165\u529B\u3057\u3066\u3044\u308B\u65B9\u5411\u306B\n\u7D20\u65E9\u304F\u79FB\u52D5\u3059\u308B"
+  commentText: 
+  spellPrefab: {fileID: 6890014423517878457, guid: 6a785856b56b92f4bb75d1875b6371f3,
+    type: 3}
+  manaCost: 1
+  trashMana: 1
+  primaryDamage: 0
+  secondDamage: 0

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5818651cb015da44ea50da67972f2c76, type: 3}
+  m_Name: SawDisk
+  m_EditorClassIdentifier: 
+  IDName: SawDisk
+  spellName: "\u30BD\u30FC\u30C7\u30A3\u30B9\u30AF"
+  imageSprite: {fileID: 21300000, guid: cb0c78f79df99554ab46953a0dda2cf0, type: 3}
+  manaCostString: 2
+  damageString: 30
+  attackOftenString: 
+  manualText: "\u4F55\u304B\u306B\u5F53\u305F\u308B\u3068\u8DF3\u306D\u8FD4\u308B\n\u5186\u76E4\u3092\u767A\u5C04\u3059\u308B\uFF01"
+  commentText: "// \u30D5\u30D5\u30D5....\u771F\u3063\u4E8C\u3064\u3060..."
+  spellPrefab: {fileID: 5327334215627400380, guid: 137a602934c7d874ba5d21f0038d5cb5,
+    type: 3}
+  manaCost: 2
+  trashMana: 1
+  primaryDamage: 30
+  secondDamage: 0
