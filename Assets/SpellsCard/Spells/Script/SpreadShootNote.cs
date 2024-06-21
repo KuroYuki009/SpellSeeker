@@ -41,7 +41,9 @@ public class SpreadShootNote : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != ownerTag && other.tag != "Search")
+        string hitObjectTag = other.tag;
+
+        if (hitObjectTag != ownerTag && hitObjectTag != "Search")
         {
             if (other.transform.GetComponent<StatusManager>() != null)
             {
@@ -51,10 +53,17 @@ public class SpreadShootNote : MonoBehaviour
                 other.transform.GetComponent<StatusManager>().HP_Inflict_Damage(damage);//ダメージを発生させる。
 
                 Instantiate(targetHitEffect, other.transform.position, Quaternion.identity);
+                Destroy(gameObject);
             }
-            else Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
-
-            Destroy(gameObject);
+            else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+            {
+                //何も起こしません。
+            }
+            else
+            {
+                Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }
         }
     }
 }

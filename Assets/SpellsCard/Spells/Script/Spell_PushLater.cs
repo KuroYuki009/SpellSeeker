@@ -63,7 +63,7 @@ public class Spell_PushLater : MonoBehaviour
         ownerAS.PlayOneShot(shotSE);
 
         speed = 28.0f;
-        goalTime = 3.0f;
+        goalTime = 2.0f;//二秒後に起動させる。
 
         rootString = "ShellMode";//シェルモードに移行。
 
@@ -100,9 +100,11 @@ public class Spell_PushLater : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        string hitObjectTag = other.tag;
+
         if(hitSW == false)
         {
-            if (other.tag != ownerTag && other.tag != "Search")
+            if (hitObjectTag != ownerTag && hitObjectTag != "Search")
             {
                 hitObj = other.gameObject;
 
@@ -122,19 +124,29 @@ public class Spell_PushLater : MonoBehaviour
                     Instantiate(targetHitEffect, hitObj.transform.position, Quaternion.identity);
 
                     Instantiate(pushDirectionalEffect, gameObject.transform.position, transform.rotation,transform);
+
+                    HitToEnd();
+                }
+                else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+                {
+                    //何も起こしません。
                 }
                 else//静的なオブジェクトにヒットした場合。
                 {
                     Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
                     audioSource.PlayOneShot(hitSE);
+
+                    HitToEnd();
                 }
                 
-                
-                rb.velocity = Vector3.zero;
-                rb.isKinematic = true;//重力を無効化する。
-                modelObject.SetActive(false);//モデル表示を無効化する。
+                void HitToEnd()
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.isKinematic = true;//重力を無効化する。
+                    modelObject.SetActive(false);//モデル表示を無効化する。
 
-                Stick_at();
+                    Stick_at();
+                }
             }
         }
         
@@ -142,24 +154,9 @@ public class Spell_PushLater : MonoBehaviour
 
     void ShellMode()
     {
-        /*
-        //レイキャストを使った接着地点取得。
-        Vector3 ori = gameObject.transform.position;
-        Ray ray = new Ray(ori, transform.forward);
-
-
-        int outMask = ~LayerMask.GetMask(new string[] { "Search", ownerTag });//所有者タグ名と同じレイヤーを除外。
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 30f, outMask))
-        {
-            if (hit.point == null) hitPos = Vector3.zero;
-            else if(hitPos != hit.point) hitPos = hit.point;
-        }
-        */
         //破壊までの時間。
         processTime += 1 * Time.deltaTime;
-        if(processTime >= 3)
+        if(processTime >= 3.0f)
         {
             Destroy(gameObject);
         }
@@ -168,9 +165,6 @@ public class Spell_PushLater : MonoBehaviour
     void Stick_at()//くっ付くいた時の処理。終わった後に時間処理に移行。
     {
         hitSW = true;
-
-        
-        // if(hitPos != Vector3.zero) gameObject.transform.position = hitPos;//レイキャストの当たった位置に移動させる。
 
         if (hitObj.GetComponent<Rigidbody>() != null)//相手が重力に影響を受ける場合、その方向へ力を加える。
         {

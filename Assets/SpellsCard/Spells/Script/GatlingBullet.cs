@@ -20,6 +20,7 @@ public class GatlingBullet : MonoBehaviour
 
     //効果音類。
     public AudioClip hitSE;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -37,22 +38,30 @@ public class GatlingBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != ownerTag && other.tag != "Search")
+        string hitObjectTag = other.tag;// 当たったオブジェクトのタグを取得。
+
+        if (hitObjectTag != ownerTag && hitObjectTag != "Search")// 所有者のタグとSearchタグ以外のオブジェクトだった場合、
         {
-            if (other.transform.GetComponent<StatusManager>() != null)
+            if (other.transform.GetComponent<StatusManager>() != null)// 対象がStatusManagerのスクリプトを持っている場合、
             {
                 var otherSM = other.GetComponent<StatusManager>();
+
                 otherSM.HP_Inflict_Damage(damage);//ダメージを発生させる。
                 //otherSM.St_Inflict_Invincible(0.4f);//0.2秒の無敵時間を付与する。
 
                 AudioSource otherAS = other.GetComponent<AudioSource>();
                 otherAS.PlayOneShot(hitSE);
 
-                Instantiate(targetHitEffect,transform.position, Quaternion.identity);
-            }
-            //else Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
+                Instantiate(targetHitEffect, transform.position, Quaternion.identity);
 
-            Destroy(gameObject);
+
+                Destroy(gameObject);//このオブジェクトを破棄する。
+            }
+            else if (hitObjectTag =="Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+            {
+                //何も起こしません。
+            }
+            else Destroy(gameObject);//このオブジェクトを破棄する。
         }
     }
 }

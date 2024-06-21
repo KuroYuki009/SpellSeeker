@@ -77,7 +77,9 @@ public class Spell_Rubato : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != ownerTag && other.tag != "Search") 
+        string hitObjectTag = other.tag;
+
+        if (hitObjectTag != ownerTag && hitObjectTag != "Search") 
         {
             if (other.transform.GetComponent<StatusManager>() != null)
             {
@@ -90,10 +92,17 @@ public class Spell_Rubato : MonoBehaviour
                 otherAS.PlayOneShot(hitSE);
 
                 Instantiate(targetHitEffect, other.transform.position, Quaternion.identity);
+                Destroy(gameObject);
             }
-            else Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
-
-            Destroy(gameObject);
+            else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+            {
+                //何も起こしません。
+            }
+            else
+            {
+                Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }        
         }
     }
 }

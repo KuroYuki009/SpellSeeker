@@ -216,7 +216,8 @@ public class Spell_Artemis : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (searchSW == true && (other.tag != "Search" && other.tag != "Untagged" && other.tag != "Structure" && other.tag != "Installation" && other.tag != "Ground" && other.tag != ownerTag))
+        string hitObjectTag = other.tag;
+        if (searchSW == true && (hitObjectTag != "Search" && hitObjectTag != "Untagged" && hitObjectTag != "Structure" && hitObjectTag != "Installation" && hitObjectTag != "Ground" && hitObjectTag != ownerTag))
         {
             if(other.GetComponent<StatusManager>() != null)
             {
