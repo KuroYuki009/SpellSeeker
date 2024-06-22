@@ -133,8 +133,8 @@ public class HandCardManager : MonoBehaviour
                 case "CardDraw":// 本デッキからカードを取り出し、手札に入れる。
                     HandDraw();
                     break;
-                case "HundFalld"://手札をすべて破棄し、クールタイムを発生させた後にCardDrowに移行する。
-                    HundFalld();
+                case "HundFalldToLoad"://手札をすべて破棄し、クールタイムを発生させた後にCardDrowに移行する。
+                    HundFalldToLoad();
                     break;
 
                 case "DrawCoolTime"://ドロー時に発生する時間経過処理。
@@ -204,15 +204,8 @@ public class HandCardManager : MonoBehaviour
         if (handCards[0] == noneCardData)//ハンドケース内のカード数が0場合。
         {
             standbySW = false;//スタンバイ状態を無効化する。
-            switchRoot = "HundFalld";//手札の手前がnoneCardDateだった場合、ドローを行う。
+            switchRoot = "HundFalldToLoad";//手札の手前がnoneCardDateだった場合、ドローを行う。
         }
-
-        /*
-        //旧式入力。
-        if (Input.GetKeyDown(KeyCode.Space)) switchRoot = "HundFalld";
-        if(Input.GetMouseButtonDown(0)) switchRoot = "HandCard_Cast"; 
-        if (Input.GetMouseButtonDown(1)) switchRoot = "HandCard_Trash";
-        */
     }
 
 
@@ -327,7 +320,7 @@ public class HandCardManager : MonoBehaviour
         HundWindowRefresh();
     }
 
-    void HundFalld()//手札を破棄する処理。またそこから山札(デッキ)からカードをドローする処理につなげる。
+    void HundFalldToLoad()//手札を破棄する処理。またそこから山札(デッキ)からカードをドローする処理につなげる。
     {
         if (deckCards.Count > 0)//デッキ内にカードが有り、ドローが可能な場合。
         {
@@ -400,6 +393,7 @@ public class HandCardManager : MonoBehaviour
         else
         {
             Debug.Log("ドロークールタイム終了");
+            switchRoot = "CardDraw";
 
             cooltime_Text.enabled = false;
             cooltime_FillImage.enabled = false;
@@ -411,8 +405,8 @@ public class HandCardManager : MonoBehaviour
             audioSource.PlayOneShot(ac_HandCase_Reload_End);//SEを再生する。
 
             handAnimator.SetBool("DrawBool", false);
-            switchRoot = "CardDraw";
-            
+
+            //switchRoot = "CardDraw";
         }
     }
 
@@ -432,6 +426,7 @@ public class HandCardManager : MonoBehaviour
         else
         {
             Debug.Log("リロードクールタイム終了");
+            switchRoot = "DeckShuffle";//デッキリロードの処理を行う。
 
             cooltime_Text.enabled = false;
             cooltime_FillImage.enabled = false;
@@ -444,7 +439,7 @@ public class HandCardManager : MonoBehaviour
 
             Debug.Log("デッキ補充");
             handAnimator.SetBool("DeckReloadBool", false);
-            switchRoot = "DeckShuffle";//デッキリロードの処理を行う。
+            //switchRoot = "DeckShuffle";//デッキリロードの処理を行う。
         }
     }
 
@@ -504,6 +499,8 @@ public class HandCardManager : MonoBehaviour
         }
     }
 
+    //// ロックオンアクションの処理関係。
+    //
     public void LockOnSearch(InputAction.CallbackContext context)//ロックオンを行う。
     {
         if (HCM_ProcessSafety == false)
@@ -601,9 +598,9 @@ public class HandCardManager : MonoBehaviour
                     //ロックオン解除までの時間をリセット。
                     lockOnOutTime += 0.1f;
                 }
-            }
 
-            if (TargetSM.hitPoint <= 0) LockOnOut();//もしロックオンしている対象のHPが0の場合、ロックオンをオフにする。
+                if (TargetSM.hitPoint <= 0) LockOnOut();//もしロックオンしている対象のHPが0の場合、ロックオンをオフにする。
+            }
         }
     }
 

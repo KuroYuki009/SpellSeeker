@@ -136,10 +136,12 @@ public class Spell_PushLater : MonoBehaviour
                     Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
                     audioSource.PlayOneShot(hitSE);
 
-                    HitToEnd();
+                    hitSW = true;
+
+                    Destroy(gameObject);
                 }
                 
-                void HitToEnd()
+                void HitToEnd()//何かしらに当たった後の移行処理
                 {
                     rb.velocity = Vector3.zero;
                     rb.isKinematic = true;//重力を無効化する。
@@ -182,6 +184,8 @@ public class Spell_PushLater : MonoBehaviour
         {
             rootString = "Blast_Impact";//処理を変更。
         }
+
+        if (hitSM.hitPoint <= 0) Destroy(gameObject);// もし、時間内に当たった対象の体力が0になったら、
     }
 
     void Blast_Impact()//爆発処理。

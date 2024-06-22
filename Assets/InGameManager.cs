@@ -631,6 +631,8 @@ public class InGameManager : MonoBehaviour
         Time.fixedDeltaTime = 0.02f;
     }
 
+    ////プレイヤーパレット群の表示・非表示の演出用の関数たち。
+    //
     void PalletGroup_AlphaHide()//プレイヤーパレットのグループ群をアルファ値かを0にする。
     {
         PalletGroup_CanvasGroup.alpha = 0;
