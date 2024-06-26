@@ -4,24 +4,46 @@ using UnityEngine;
 
 public class Spell_Knife : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
+
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("射撃時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;//射撃時のエフェクト。
+
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("射撃時に 再生されるサウンドです。")]
+    public AudioClip shotSE;
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public AudioClip hitSE;
+    #endregion
+
+    ////--------------------------------------------------
 
     SpellPrefabManager spm;
-    GameObject ownerObj;//所有者。
-    string ownerTag;//所有者のタグ
-
-    public ParticleSystem shotEffect;//射撃時のエフェクト。
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
 
     Rigidbody rb;
 
-    //テスト用のスペルです。
-    int damage;
-    public float speed;
+    GameObject ownerObj;//所有者。
+    string ownerTag;//所有者のタグ
 
-    public AudioClip shotSE;
-    public AudioClip hitSE;
+    int damage;// このオブジェクトのダメージ値
+    float speed;// このオブジェクトの移動スピード
+
+    ////--------------------------------------------------
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -36,8 +58,9 @@ public class Spell_Knife : MonoBehaviour
         AudioSource ownerAS = ownerObj.GetComponent<AudioSource>();
         ownerAS.PlayOneShot(shotSE);
 
-        speed = 22.0f;
-        Instantiate(shotEffect, transform.position, Quaternion.identity);
+        speed = 22.0f;// オブジェクトの移動スピード値を 22 に設定。
+
+        Instantiate(shotEffect, transform.position, Quaternion.identity);// 射撃エフェクトを生成。
     }
 
     void FixedUpdate()

@@ -4,25 +4,47 @@ using UnityEngine;
 
 public class Spell_Straight : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
 
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("射撃時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;// 射撃時のエフェクト
+
+    [Tooltip("対象に ヒットした際に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;// 対象へのヒットエフェクト
+
+    [Tooltip("何かしらに ヒットした際に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;// 他オブジェクトへのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("射撃時に 再生させるサウンドです。")]
+    public AudioClip shotSE;// 射撃時の効果音。
+
+    [Tooltip("何かしらにヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;// ヒット時の効果音。
+    #endregion
+
+    ////--------------------------------------------------
+    
     SpellPrefabManager spm;
-    GameObject ownerObj;
-    string ownerTag;
 
-    public LineRenderer tr;
+    LineRenderer tr;
 
-    public ParticleSystem shotEffect;//射撃時のエフェクト
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
+    GameObject ownerObj;//所有者オブジェクト。
+    string ownerTag;//所有者のタグ
 
-    int damage;
+    int damage;//対象に与えるダメージ値 変数。
 
-    bool shotSW;//撃った後か。
+    bool shotSW;//射撃したかの二極値。
 
-    //効果音
-    public AudioClip shotSE;
-    public AudioClip hitSE;
+    ////--------------------------------------------------
+    
     void Start()
     {
         spm = GetComponent<SpellPrefabManager>();
@@ -32,8 +54,6 @@ public class Spell_Straight : MonoBehaviour
         ownerObj = spm.ownerObject;//所有者となるオブジェクトを格納する。
         gameObject.layer = ownerObj.layer;//所有者のレイヤーをこのオブジェクトに渡す。
         ownerTag = spm.ownerObject.tag;//所有者のタグを格納する。
-
-        //ownerObj.GetComponent<StatusManager>().St_Inflict_NoMove(0.2f);//所有者に移動不可を付与する。
 
         Instantiate(shotEffect, transform.position,transform.rotation);
 
@@ -85,9 +105,6 @@ public class Spell_Straight : MonoBehaviour
 
                 shotSW = true;
 
-                
-                //string name = hit.collider.gameObject.name;//ヒットしたオブジェクトの名前を格納。
-                //Debug.Log(name);//ヒットしたオブジェクトの名前をログに出す。
             }
         }
         else if(shotSW == true)

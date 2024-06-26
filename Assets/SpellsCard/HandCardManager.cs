@@ -156,8 +156,8 @@ public class HandCardManager : MonoBehaviour
     public void SetUp()//Startで処理する内容。
     {
         Debug.Log("セットアップしてます");
-        drawCT_max = 2;
-        deckReloadCT_basisTime = 5;
+        drawCT_max = 1.4f;　　　　　　// ドローに必要な時間を1.4秒に設定。
+        deckReloadCT_basisTime = 3.0f;// リロードに必要な時間を3.0秒に設定。
         //初期化。
         deckReloadCT_sumTime = 0;
         cooltime_Text.enabled = false;

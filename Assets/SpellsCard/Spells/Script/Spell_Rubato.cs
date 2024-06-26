@@ -4,28 +4,54 @@ using UnityEngine;
 
 public class Spell_Rubato : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
+
+    
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("発射時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;// 射撃時のエフェクト。
+
+    [Tooltip("準備完了時に 描写されるエフェクトです。")]
+    public ParticleSystem standbyEffect;// 準備完了時のエフェクト。加速時に発生させる。
+
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;// 対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;// 対象以外のオブジェクトへのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("発射時に 再生されるサウンドです。")]
+    public AudioClip shotSE;
+
+    [Tooltip("何かしらに ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;
+    #endregion
+
+    ////--------------------------------------------------
 
     SpellPrefabManager spm;
+
     GameObject ownerObj;//所有者。
     string ownerTag;//所有者のタグ
 
-    public ParticleSystem shotEffect;//射撃時のエフェクト。
-    public ParticleSystem standbyEffect;//準備完了時のエフェクト。加速時に発生させる。
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
-
     Rigidbody rb;
-    int damage;
-    float speed;//このオブジェクトの移動スピード
-    bool highSpeedSW;
+    AudioSource audioSource;
+
+    int damage;// このオブジェクトのダメージ値。
+    float speed;// このオブジェクトの移動スピード値。
+
+
+    bool highSpeedSW;// 高速速度に移行したかの二極値。
 
     float elapsedTime;//経過時間を保管する為の入れ物。
 
-    AudioSource audioSource;
-    public AudioClip shotSE;
-    public AudioClip hitSE;
-    // public AudioClip progressSE;
+    ////--------------------------------------------------
 
     void Start()
     {

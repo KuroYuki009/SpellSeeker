@@ -74,8 +74,10 @@ public class PlayerPreparationInputDate : MonoBehaviour
         playingData = GetComponent<PlayingData>();
         ppid_AS = GetComponent<AudioSource>();
         PlayerInput pi = GetComponent<PlayerInput>();//プレイヤーインプットを取得。
+
         pi.currentActionMap = pi.actions.actionMaps[1];//取得したPlayerInputのアクションマップを1番目(CharaSetting)に変更。
-        // tree_CharaCustomInt_VC_Int = playingData.playerNumber;//プレイヤーナンバーをカラーCustomのIntに合わせる。
+        tree_CharaCustomInt_VC_Int = playingData.playerNumber;//プレイヤーナンバーをカラーCustomのIntに合わせる。
+
         inputValueRefresh();
 
         WindowbackUpdate();
@@ -121,7 +123,7 @@ public class PlayerPreparationInputDate : MonoBehaviour
         readySW = false;
         Ready_ImageGroup.SetActive(false);
         treeParagraphInt = 0;
-        tree_CharaCustomInt_VC_Int = playingData.playerNumber;
+
         TreeVisRefresh();//表示内容の更新を行う。
     }
 

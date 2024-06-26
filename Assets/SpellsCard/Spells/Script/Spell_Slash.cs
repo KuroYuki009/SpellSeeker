@@ -4,30 +4,45 @@ using UnityEngine;
 
 public class Spell_Slash : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
 
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("対象に ヒットした時に 描写されるエフェクトです。")]
+    public GameObject hitEffect;// 対象へのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("使用時に 再生されるサウンドです。")]
+    public AudioClip shotSE;// 生成時に発生する音。
+
+    [Tooltip("標的に ヒットした際に 再生されるサウンドです。")]
+    public AudioClip hitSE;// 当たった際の音。
+    #endregion
+
+    ////--------------------------------------------------
+    
     SpellPrefabManager spm;
-    GameObject ownerObj;//所有者オブジェクト
-    string ownerTag;//所有者のタグ
 
-    Collider cd;
-    AudioSource ownerAS;
+    GameObject ownerObj;// 所有者オブジェクト
+    string ownerTag;// 所有者のタグ
+    AudioSource ownerAS;// 所有者オブジェクトのAudioSource
 
-    float aliveTime;//生存時間。
-    bool oneHit;//一度当たったかの判定。
+    int damage;// 対象に与えるダメージ
 
-    int damage;
 
-    //public GameObject shotEffect;//射撃時のエフェクト
-    public GameObject hitEffect;//対象へのヒットエフェクト
+    float aliveTime;// オブジェクトの生存時間。
+    bool oneHit;// 一度当たったかの判定。
 
-    //効果音
-    public AudioClip shotSE;//生成時に発生する音。
-    public AudioClip hitSE;//当たった際の音。
+    ////--------------------------------------------------
+
     void Start()
     {
         spm = GetComponent<SpellPrefabManager>();
-        cd = GetComponent<Collider>();
 
         damage = spellDate.primaryDamage;
         ownerObj = spm.ownerObject; //所有者となるオブジェクトを格納する。

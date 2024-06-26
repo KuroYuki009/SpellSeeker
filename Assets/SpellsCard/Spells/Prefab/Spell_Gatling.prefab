@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellDate: {fileID: 11400000, guid: de4e38f80e94b6844b94ca2ef0529a75, type: 2}
+  magazineSizeInt: 12
   instBulletObject: {fileID: 8417767242948538096, guid: 9122b3a4cc98b3f40b74840d0066db30,
     type: 3}
   instBarrelTF:
@@ -232,6 +233,7 @@ MonoBehaviour:
   shotEffect: {fileID: 5848313087086787502, guid: 603f2234a47d6194eba300bd0e48c368,
     type: 3}
   shotSE: {fileID: 8300000, guid: db7541d14e3e60246b1bc953f730ecec, type: 3}
+  ownerSM: {fileID: 0}
 --- !u!1 &5256395466358396955
 GameObject:
   m_ObjectHideFlags: 0

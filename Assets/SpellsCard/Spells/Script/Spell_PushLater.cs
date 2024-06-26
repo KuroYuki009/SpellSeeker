@@ -4,49 +4,78 @@ using UnityEngine;
 
 public class Spell_PushLater : MonoBehaviour
 {
-    public SpellData spellDate;//アタッチしたスペルデータ。
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
+
+
+    [Header("モデル オブジェクト")]//---
+    [Tooltip("モデルの制御に使用されます。")]
+    public GameObject modelObject;//このスペルのモデル。
+
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("射撃時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;// 射撃時のエフェクト。
+
+    [Tooltip("マズルフラッシュの 描写エフェクト")]
+    public ParticleSystem muzzleFlashEffect;// マズルフラッシュエフェクト。
+
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;// 対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;// 対象以外のオブジェクトへのヒットエフェクト
+
+    [Tooltip("起爆時に 描写されるエフェクトです。")]
+    public ParticleSystem windEffect;// 起爆時のエフェクト
+
+    [Tooltip("力を加える方向を 描写するエフェクトです。")]
+    public ParticleSystem pushDirectionalEffect;// ヒット後に描写される指方向エフェクト。
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("射撃時に 再生されるサウンドです。")]
+    public AudioClip shotSE;//射撃時に発生する音。
+
+    [Tooltip("何かしらに ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;//当たった際の音。
+
+    [Tooltip("起爆時に 再生されるサウンドです。")]
+    public AudioClip blastSE;//爆発時に鳴らす音。
+    #endregion
+
+    ////--------------------------------------------------
+
+    SpellPrefabManager spm;
 
     Rigidbody rb;
     AudioSource audioSource;
 
-    SpellPrefabManager spm;
-    GameObject ownerObj;//所有者。
-    string ownerTag;//所有者のタグ
-    AudioSource ownerAS;
-    public GameObject modelObject;//このスペルのモデル。
+    GameObject ownerObj;// 所有者。
+    string ownerTag;// 所有者のタグ
+    AudioSource ownerAS;// 所有者オブジェクトのAudioSource
 
-    ////エフェクト
-    public ParticleSystem shotEffect;//射撃時のエフェクト。
-    public ParticleSystem muzzleFlashEffect;//射撃時マズルフラッシュエフェクト。
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
-    public ParticleSystem windEffect;//起爆時のエフェクト
+    int damage;// このオブジェクトのダメージ値
+    float speed;// このオブジェクトの移動スピード値
 
-    public ParticleSystem pushDirectionalEffect;
-    //------------
-
-    int damage;//このスペルのダメージ格納用。
-
-    public float speed;//このスペルの速度格納用。
-    bool hitSW;//当たっているかどうか。
-    Vector3 hitPos;//当たった位置を格納。レイが当たった位置を格納し必要な際に呼び出す。
 
     string rootString;
 
     GameObject hitObj;
     StatusManager hitSM;
-    
+    AudioSource otherAS;
 
     float processTime;//生成されてからの経過時間
 
-    float stickProcessTime;//当たってからの経過時間を格納する為の変数。
-    float goalTime;
+    bool hitSW;// 当たっているかどうか。
+    float stickProcessTime;// 当たってからの経過時間を格納する為の変数。
+    float goalTime;// 終点となる時間。
 
-    //効果音
-    public AudioClip shotSE;//生成時に発生する音。
-    public AudioClip hitSE;//当たった際の音。
-    public AudioClip blastSE;//爆発時になる音。
-    AudioSource otherAS;
+    ////--------------------------------------------------
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -67,8 +96,8 @@ public class Spell_PushLater : MonoBehaviour
 
         rootString = "ShellMode";//シェルモードに移行。
 
-        Instantiate(muzzleFlashEffect, transform.position, transform.rotation);
-        Instantiate(shotEffect, transform.position, Quaternion.identity);
+        Instantiate(muzzleFlashEffect, transform.position, transform.rotation);// マズルフラッシュのエフェクト生成。
+        Instantiate(shotEffect, transform.position, Quaternion.identity);// 波紋型のエフェクト生成。
     }
 
     void Update()
@@ -92,7 +121,7 @@ public class Spell_PushLater : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(hitSW == false)
+        if(hitSW == false)//当たるまで進み続ける。
         {
             rb.velocity = (transform.forward * speed);
         }
@@ -170,7 +199,7 @@ public class Spell_PushLater : MonoBehaviour
 
         if (hitObj.GetComponent<Rigidbody>() != null)//相手が重力に影響を受ける場合、その方向へ力を加える。
         {
-            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 40, ForceMode.Impulse);//相手を吹き飛ばす。
+            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 40, ForceMode.Impulse);//相手を吹き飛ばす。40
         }
         
         stickProcessTime = 0;//処理時間を０にする。
@@ -197,7 +226,7 @@ public class Spell_PushLater : MonoBehaviour
             otherAS.PlayOneShot(blastSE);
 
             hitSM.St_Inflict_Shock(0.2f, 2);
-            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 200, ForceMode.Impulse);//相手を吹き飛ばす。
+            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 300, ForceMode.Impulse);//相手を吹き飛ばす。200
         }
         else
         {

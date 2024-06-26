@@ -4,44 +4,85 @@ using UnityEngine;
 
 public class Spell_Artemis : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]
+    public SpellData spellDate;// 各種データ参照に使用される。
 
+
+    [Header("エフェクト")]
+    #region 
+    [Tooltip("生成時に 描写するエフェクトです。")]
+    public ParticleSystem GeneEffect;//生成時のエフェクト。
+
+    [Tooltip("射撃時に 描写するエフェクトです。")]
+    public ParticleSystem shotEffect;//射撃時のエフェクト。
+
+    [Tooltip("標的を 発見した時に 描写するエフェクトです。")]
+    public ParticleSystem standbyEffect;//標的の発見時のエフェクト。
+
+    [Tooltip("標的に ヒットした時に 描写するエフェクトです。")]
+    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に描写するエフェクトです。")]
+    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト。
+    #endregion
+
+
+    [Header("サウンド")]
+    #region 
+    [Tooltip("生成時に 再生させるサウンドです。")]
+    public AudioClip instSE;
+
+    [Tooltip("飛行モード時に 再生させるサウンドです。")]
+    public AudioClip flyingSE;
+
+    [Tooltip("標的を 発見した時に 再生させるサウンドです。")]
+    public AudioClip lockonSE;
+
+    [Tooltip("射撃時に 再生させるサウンドです。")]
+    public AudioClip shotSE;
+
+    [Tooltip("標的に ヒットした際に 再生させるサウンドです。")]
+    public AudioClip hitSE;
+    #endregion
+
+
+    [Header("モデル アニメ")]
+    [Tooltip("モデルのアニメ制御に使用されます。")]
+    public Animator animator;//モデルのアニメ制御に使用する。
+
+    [Header("発射座標")]
+    [Tooltip("定義されたオブジェクトの座標が レーザーの始点になります。")]
+    public Transform laserShootPos;//発射する場所をオブジェクトを使用して設定する。
+
+    ////--------------------------------------------------
+    
     SpellPrefabManager spm;
-    public GameObject ownerObj;//所有者オブジェクト
-    string ownerTag;//所有者のタグ
 
     Rigidbody rb;
     LineRenderer lineRenderer;
+    AudioSource audioSource;
 
-    public ParticleSystem GeneEffect;//生成時のエフェクト。
-    public ParticleSystem shotEffect;//射撃時のエフェクト。
-    public ParticleSystem standbyEffect;//準備完了時のエフェクト。
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト。
+    [HideInInspector] public GameObject ownerObj;// 所有者オブジェクト
+    string ownerTag;// 所有者のタグ
 
-    public Animator animator;//モデルのアニメ制御に使用する。インスペクターから設定必須。
-    public Transform laserShootPos;//発射する場所を設定する。インスペクターから設定必須。
-    //public GameObject destroyColliJudge;//オブジェクト自体の当たり判定。インスペクターから設定必須。
+    int damage;// 対象に与えるダメージ値。
+    float objSpeed;// このオブジェクトの移動スピード値。
 
-    [SerializeField]string switchRoute;//switch文に使用する変数。
-    float elapsedTime;//経過時間を格納するための入れ物。
-    float exTime;//射撃前の待機時間を格納するための入れ物。
-    [SerializeField]GameObject targetObj;//ターゲットとなるオブジェクト情報を格納。
 
-    int damage;
-    float objSpeed;
-    bool moveSW;//前進するかどうか。
-    [SerializeField]bool searchSW;//
-    bool rotationSW = true;//回転率
+    string switchRoute;// switch文に使用する変数。
+
+    GameObject targetObj;// ターゲットとなるオブジェクト情報を格納。
+
+    float elapsedTime;// 経過時間を格納するための入れ物。
+    float exTime;// 射撃前の待機時間を格納するための入れ物。
+
+    bool moveSW;// 前進するかどうかの二極値。
+    [HideInInspector] bool searchSW;// 索敵中かどうかの二極値。
+    bool rotationSW = true;// 回転
+
     Quaternion lookRotation;
 
-    //効果音
-    AudioSource audioSource;
-    public AudioClip instSE;
-    public AudioClip flyingSE;
-    public AudioClip lockonSE;
-    public AudioClip shotSE;
-    public AudioClip hitSE;
+    ////--------------------------------------------------
 
     void Start()
     {

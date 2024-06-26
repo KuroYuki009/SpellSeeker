@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class GatlingBullet : MonoBehaviour
 {
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("何かしらに ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;
+    #endregion
+
+    ////--------------------------------------------------
+    
+    [HideInInspector]public GameObject ownerObj;//所有者。
+    [HideInInspector]public string ownerTag;
+
     Rigidbody rb;
 
-    public GameObject ownerObj;//所有者。
-    public string ownerTag;
 
-    float speed;//弾の速度。
-    public int damage;//威力。
+    [HideInInspector]public int damage;// このオブジェクトのダメージ値。
+    float speed;// このオブジェクトの移動スピード。
 
-    //float elapsedTime;//経過時間。
-
-    //エフェクト類。
-    public ParticleSystem hitEffect;
-    public ParticleSystem targetHitEffect;
-
-    //効果音類。
-    public AudioClip hitSE;
+    ////--------------------------------------------------
 
     void Start()
     {

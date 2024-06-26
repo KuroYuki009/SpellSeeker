@@ -124,9 +124,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7302308028815578514}
+  - component: {fileID: 1217831873488975046}
   - component: {fileID: 1047785057743021394}
   - component: {fileID: -3208702443763939412}
-  - component: {fileID: 1217831873488975046}
   m_Layer: 0
   m_Name: GatlingBullet
   m_TagString: Untagged
@@ -150,6 +150,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1217831873488975046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8417767242948538096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c01a1099c01ec4cb972c72a9f61fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
+    type: 3}
+  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
+    type: 3}
+  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
+  ownerObj: {fileID: 0}
+  ownerTag: 
+  damage: 0
 --- !u!65 &1047785057743021394
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -198,22 +218,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1217831873488975046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8417767242948538096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c01a1099c01ec4cb972c72a9f61fb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObj: {fileID: 0}
-  ownerTag: 
-  damage: 0
-  hitEffect: {fileID: 0}
-  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
-    type: 3}
-  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}

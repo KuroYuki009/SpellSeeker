@@ -25,7 +25,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 06c1beface06bfa48bfe016cae2842b5, type: 2}
   - {fileID: 11400000, guid: 88d39193bd910244bbd4fd3bf977f17b, type: 2}
   - {fileID: 11400000, guid: de4e38f80e94b6844b94ca2ef0529a75, type: 2}
-  - {fileID: 11400000, guid: e38236d730f02a64a90fe944b5b5ba30, type: 2}
   poolName_2: Rare
   poolRateInt_2: 0
   poolCardDate_2: []

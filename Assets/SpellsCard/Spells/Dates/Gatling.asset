@@ -17,8 +17,8 @@ MonoBehaviour:
   imageSprite: {fileID: 21300000, guid: d9eb93a96b7856c408edae0b9ea267e4, type: 3}
   manaCostString: 1
   damageString: 8
-  attackOftenString: x16
-  manualText: "\u524D\u65B9\u306B16\u9023\u5C04\u306E\n\u5C04\u6483\u3092\u884C\u3046\u3002"
+  attackOftenString: x12
+  manualText: "\u524D\u65B9\u306B12\u9023\u5C04\u306E\n\u5C04\u6483\u3092\u884C\u3046\u3002"
   commentText: 
   spellPrefab: {fileID: 2319456491432358116, guid: 49d4616ad6d32a2489d5bc17a32b062b,
     type: 3}

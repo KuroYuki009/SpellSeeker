@@ -41,11 +41,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2977426254182102984}
+  - component: {fileID: 7931918135971774453}
+  - component: {fileID: 7964555270581362371}
   - component: {fileID: 7681248691987219334}
   - component: {fileID: 6307548965140591785}
   - component: {fileID: 1885757446796356738}
-  - component: {fileID: 7931918135971774453}
-  - component: {fileID: 7964555270581362371}
   m_Layer: 0
   m_Name: Spell_PushLater
   m_TagString: Untagged
@@ -69,6 +69,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7931918135971774453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979851219669035799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerObject: {fileID: 0}
+--- !u!114 &7964555270581362371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979851219669035799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a59f60967acbe46ab0cc64be737738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellDate: {fileID: 11400000, guid: 88d39193bd910244bbd4fd3bf977f17b, type: 2}
+  modelObject: {fileID: 448975771537739414}
+  shotEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
+    type: 3}
+  muzzleFlashEffect: {fileID: 5235171359543231864, guid: b4142b86b78e9c74d9f7b6df4bc9ccf9,
+    type: 3}
+  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
+    type: 3}
+  hitEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
+    type: 3}
+  windEffect: {fileID: 8575972590327113164, guid: e9fa93747953c2e47bc0c6e63453b534,
+    type: 3}
+  pushDirectionalEffect: {fileID: 4751743738672989056, guid: fb10bd7ce34233845a5a4d4281b3c566,
+    type: 3}
+  shotSE: {fileID: 8300000, guid: ce42584c172aadd4c8703d5ec697855d, type: 3}
+  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
+  blastSE: {fileID: 8300000, guid: 311a1a90e91730e48a5ae0d1bbc89a6b, type: 3}
 --- !u!54 &7681248691987219334
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -213,49 +255,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7931918135971774453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 979851219669035799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObject: {fileID: 0}
---- !u!114 &7964555270581362371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 979851219669035799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2a59f60967acbe46ab0cc64be737738, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellDate: {fileID: 11400000, guid: 88d39193bd910244bbd4fd3bf977f17b, type: 2}
-  modelObject: {fileID: 448975771537739414}
-  shotEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
-    type: 3}
-  muzzleFlashEffect: {fileID: 5235171359543231864, guid: b4142b86b78e9c74d9f7b6df4bc9ccf9,
-    type: 3}
-  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
-    type: 3}
-  hitEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
-    type: 3}
-  windEffect: {fileID: 8575972590327113164, guid: e9fa93747953c2e47bc0c6e63453b534,
-    type: 3}
-  pushDirectionalEffect: {fileID: 4751743738672989056, guid: fb10bd7ce34233845a5a4d4281b3c566,
-    type: 3}
-  speed: 0
-  shotSE: {fileID: 8300000, guid: ce42584c172aadd4c8703d5ec697855d, type: 3}
-  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
-  blastSE: {fileID: 8300000, guid: 311a1a90e91730e48a5ae0d1bbc89a6b, type: 3}
 --- !u!1 &3222034508485627745
 GameObject:
   m_ObjectHideFlags: 0

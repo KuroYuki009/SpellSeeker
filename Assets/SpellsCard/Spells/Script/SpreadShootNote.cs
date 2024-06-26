@@ -4,33 +4,56 @@ using UnityEngine;
 
 public class SpreadShootNote : MonoBehaviour
 {
-    public GameObject ownerObj;//所有者。
-    string ownerTag;//所有者のタグ
-
+    [Header("モデル オブジェクト")]
+    [Tooltip("モデルの制御に使用されます。")]
     public GameObject modelObject;//子付けされているモデルオブジェクト。
 
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
 
-    public int damage;//対象に与えるダメージ。発射側からダメージを代入してもらう。
-    float speed;//このオブジェクトの移動スピード
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("発射時に 再生されるサウンドです。")]
+    public AudioClip shotSE;
+    [Tooltip("何かしらに ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;
+    #endregion
+
+    ////--------------------------------------------------
+    
+    [HideInInspector] public GameObject ownerObj;//所有者。
+    string ownerTag;//所有者のタグ
 
     Rigidbody rb;
-
     AudioSource audioSource;
-    public AudioClip shotSE;
-    public AudioClip hitSE;
+
+
+    [HideInInspector]public int damage;// このオブジェクトのダメージ値。
+    float speed;// このオブジェクトの移動スピード値。
+
+    ////--------------------------------------------------
+
     void Start()
     {
         if (ownerObj == null) return;
         if (modelObject != null) modelObject.GetComponent<LayerConverter>().parentDate = gameObject;
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+
         gameObject.layer = ownerObj.layer;//所有者のレイヤーをこのオブジェクトに渡す。
         ownerTag = ownerObj.tag;
         gameObject.tag = ownerTag;
+
         speed = 10;//スピードを入れる。
 
-        audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(shotSE);
     }
 
