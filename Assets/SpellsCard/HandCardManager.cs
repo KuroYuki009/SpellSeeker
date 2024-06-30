@@ -5,141 +5,206 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class HandCardManager : MonoBehaviour
 {
-    //このスクリプトのセルフティ(falseで解除状態)
-    public bool HCM_ProcessSafety;
+    [Header("デッキデータ")]//---
+    #region
+    [Tooltip("編集済みのデッキデータを指す。")]
+    public DeckData deckInst;// 編集済みのデッキデータ。
 
-    ////他スクリプト関連。
+    [Tooltip("現在のデッキデータ。")]
+    public List<SpellData> deckCards;//現在のデッキデータ。
+    [HideInInspector]public List<SpellData> depositDeck;//シャフルする際に一度デッキデータをキャッシュする為の格納形。
+
+    [Tooltip("現在の手札にあるカード")]
+    public List<SpellData> handCards;//手札
+    #endregion
+
+
+    [Header("始点")]//---
+    #region
+    [Tooltip("カードを使用した時に 生成を行う為の始点となる座標を オブジェクトで指定する。")]
+    public GameObject instPos;//プレハブの生成地点として使用する座標オブジェクト。
+    #endregion
+
+
+    [Header("ハンドケース アニメ関係")]//---
+    #region
+    [Tooltip("ハンドケースの アニメ制御に使用される アニメーターです。")]
+    public Animator handAnimator;//ハンドケースのアニメーション。(UIのPallet内に含まれるゲームオブジェクトActionAnima)
+
+    [Tooltip("リロード・ドロー時に 表示させる 残りクールタイムのテキスト。")]
+    public Text cooltime_Text;//クールタイムのテキスト。
+
+    [Tooltip("リロード・ドロー時に 表示させる 視覚的な残り時間の演出イメージ画像。")]
+    public Image cooltime_FillImage;//クールタイムの塗りつぶし。
+
+    [Space]
+
+    [Tooltip("キャストパネルのアニメ制御に使用される アニメーターです。")]
+    public Animator castPanelAnimator;//ハンドケースのキャストパネルのアニメ制御アニメーター。(UIのPallet内に含まれるゲームオブジェクトCastPanelAnima)
+
+    [Tooltip("キャストパネルに入っているカードの 名前 を表示するテキストです。")]
+    public Text castCardNameText;//キャストパネルに入っているカードの名前の表示する。
+
+    [Tooltip("キャストパネルに入っているカードの ダメージ値 を表示するテキストです。")]
+    public Text castCardDamageText;//キャストパネルに入っているカードのダメージ値の表示。
+
+    [Space]
+
+    [Tooltip("各マグパネルの GUIImage制御に使用される スクリプト。")]
+    public List<PickCard> pickWindow;// ハンドケースの描写用GUIImage。
+
+    [Tooltip("カードマグが空の際に 表示させる Noneカードデータ")]
+    public SpellData noneCardData;// 非表示用のカードデータ。
+
+    [Tooltip("キャストパネル内のカードが利用できない際に表示させる被せカバー画像。")]
+    public Image CastCardCover;//カードが使用できない場合に表示するカバー画像。
+
+    [Tooltip("キャストパネル下部マナ表示の アニメ制御に使用される アニメーターです。")]
+    public Animator manaCostWindow_0_Animator;//キャストパネル下部のマナ表示ウィンドウのAnimatorコンポーネント。
+
+    [Tooltip("各マグパネルに 存在してる各カードのコストを表示させる為の テキスト群です。")]
+    public List<Text> manaCostWindow;//ハンドケースの各カードのコストを描写する。
+
+    [Tooltip("デッキの 残りカード枚数を 表示するテキストです。")]
+    public Text deckCountText;//デッキに含まれるカード残数
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("ハンドケースの リロード・ドロー時に 最初の入りで 再生されるサウンドです。")]
+    public AudioClip ac_HandCase_Reload_Start;
+
+    [Tooltip("ハンドケースの リロード・ドロー時に 待機している間 再生されるループサウンドです。")]
+    public AudioClip ac_HandCase_Reload_Charge;
+
+    [Tooltip("ハンドケースの リロード・ドロー時に 最後の閉めで 再生されるサウンドです。")]
+    public AudioClip ac_HandCase_Reload_End;
+
+
+    [Tooltip("カードの破棄時に 再生されるサウンドです。")]
+    public AudioClip cardFoldSE;
+
+
+    [Tooltip("ロックオンの 捕捉時に 再生されるサウンドです。")]
+    public AudioClip lockOn_InSE;
+
+    [Tooltip("ロックオンの 解除時に 再生されるサウンドです。")]
+    public AudioClip lockOn_OutSE;
+    #endregion
+
+    ////--------------------------------------------------
+
     PlayingData playingData;//スクリプト「playingData」格納用
     PlayerMoving playerMoving;//スクリプト「playerMoving」格納用
     StatusManager statusManager;//スクリプト「StatusManager」格納用。
 
-    ////スペルデッキ関連。
-    public DeckData deckInst;
+    [HideInInspector] public LineRenderer lineRenderer;
+    AudioSource audioSource;
 
-    //ハンドケースのアクションアニメーション関係。(UIのPallet内に含まれるゲームオブジェクトActionAnimaをアタッチする。)
-    public Animator handAnimator;//ハンドケースのアニメーション。
-    public Text cooltime_Text;//クールタイムのテキスト。
-    public Image cooltime_FillImage;//クールタイムの塗りつぶし。
 
-    //ハンドケースのキャストパネルのアニメーション関係。(UIのPallet内に含まれるゲームオブジェクトCastPanelAnimaをアタッチする。)
-    public Animator castPanelAnimator;
+    [HideInInspector] public string switchRoot;
 
-    ////インスペクターでのアタッチ必須項目
-    public List<SpellData> deckCards;//デッキカード
-    [SerializeField] List<SpellData> depositDeck;//シャフルする際に入れていくことが出来る。
-    public List<SpellData> handCards;//手札
+    //このスクリプトのセルフティ(falseで解除状態)
+    [HideInInspector] public bool HCM_ProcessSafety;
+    
+    bool standbySW;//準備完了か否か。
 
-    public Text castCardNameText;//キャストカーソルに入っているカードの名前の表示する。
-    public Text castCardDamageText;//キャストカーソルに入っているカードのダメージ値の表示。
+    [HideInInspector] public int deckCount;//現在のデッキカード枚数を格納する変数。
+    int handCard_max = 5;//手札上限。現状この数値を変更する事はできません。
 
-    public List<PickCard> pickWindow;// ハンドケースの描写用GUIImage。
-    public SpellData noneCardData;// 非表示用のカードデータ。
 
-    public Image CastCardCover;//カードが使用できない場合に表示するカバー画像。
+    //クールタイム関係
+    #region
+    [HideInInspector] public float drawCT;//現在のクールタイム値。
+    [HideInInspector] public float drawCT_max;//ドローに発生するクールタイムの長さ。
 
-    public Animator manaCostWindow_0_Animator;//最前列のカードのマナ表示ウィンドウのAnimatorコンポーネント。
-
-    public List<Text> manaCostWindow;//ハンドケースの各カードのコストを描写する。
-
-    public Text deckCountText;//デッキに含まれるカード残数
-
-    //
-    public GameObject instPos;//プレハブの生成地点として使用する座標オブジェクト。
-
-    ////分岐用
-    public string switchRoot;
-    [SerializeField]bool standbySW;//準備完了か否か。
-
-    //
-    public int deckCount;//処理回数カウント用
-    int handCard_max = 5;//手札上限
-
-    //クールタイム
-    public float drawCT;//進行型クールタイム。
-    public float drawCT_max;//ドローに発生するクールタイムの長さ。
-
-    public float deckReloadCT;//進行型クールタイム。
-    public float deckReloadCT_max;//デッキリロードに発生するクールタイムの長さ。(basisTimeとsumTimeの合計値)
-    public float deckReloadCT_basisTime;//デッキリロードに発生するクールタイムの基礎数値。
-    public float deckReloadCT_sumTime;//使用したカードに合わせ増減する時間値をあらかじめ格納する。必要な時に呼びだし、数値を空にする。
-
-    //入力関係
+    [HideInInspector] public float deckReloadCT;//現在のクールタイム値。
+    [HideInInspector] public float deckReloadCT_max;//デッキリロードに発生するクールタイムの長さ。basisTimeとsumTimeを合わせた合計値をこれに格納して使用する算段。
+    [HideInInspector] public float deckReloadCT_basisTime;//デッキリロードに発生するクールタイムの基礎数値。
+    [HideInInspector] public float deckReloadCT_sumTime;//使用したカードに合わせ増減する時間値をあらかじめ格納する。
+    #endregion
 
 
     //ロックオンシステム系
-    public GameObject lockOnTarget;//ロックオンしたオブジェクトを格納。
+    #region
+    [HideInInspector] public GameObject lockOnTarget;//ロックオンしたオブジェクトを格納。
     StatusManager TargetSM;//ロックオンしたオブジェクトのStatusManager。
-    public LineRenderer lineRenderer;
-    float lockOnDistance;//ロックオン可能距離。
+
     bool canlockOnSW;//ロックオンできるかを二極値で表す。
+    float lockOnDistance;//ロックオン可能距離。
     float cantLockOnTime;//ロックオン時クールタイム。
     float lockOnOutTime;//ロックオン維持時間。ロックオン中に壁越しになった際の解除までの時間。
 
-    float lineSize;
-
+    float lineSize;//現在のロックオンラインの横幅。
     float lockOnLineInstPoint;//ロックオン時に描写する線の表示する高さ。
+    #endregion
 
-    //サウンド系
 
-    AudioSource audioSource;
-
-    public AudioClip ac_HandCase_Reload_Start;
-    public AudioClip ac_HandCase_Reload_Charge;
-    public AudioClip ac_HandCase_Reload_End;
-
-    public AudioClip cardFoldSE;
-
-    public AudioClip lockOn_InSE;
-    public AudioClip lockOn_OutSE;
+    ////--------------------------------------------------
 
     void Start()
     {
+        statusManager = GetComponent<StatusManager>();
+        playingData = GetComponent<PlayingData>();
+        audioSource = GetComponent<AudioSource>();
+        if (lineRenderer == null) lineRenderer = GetComponent<LineRenderer>();//コンポ―ネントを取得。
+
         switchRoot = "SetUp";
     }
 
-    
     void Update()
     {
         if(HCM_ProcessSafety == false)
         {
             switch (switchRoot)
             {
+
                 case "SetUp"://処理を行う前に発生させる処理。
                     SetUp();
                     break;
 
-                case "HandCard_Cast"://使用
-                    HandCard_Cast();
-                    break;
-                case "HandCard_Trash"://破棄
-                    HandCard_Trash();
+
+                case "HandCard_Cast":// カード使用
+                    HandCard_Cast_Process();
                     break;
 
-                //
+                case "HandCard_Trash":// カード破棄
+                    HandCard_Trash_Process();
+                    break;
+
+            
 
                 case "SetUpDeckCharge":// プレイヤーがビルドしたデッキデータをデッキに入れる処理。
                     Debug.Log("デッキチャージ");
                     break;
+
                 case "DeckShuffle":// デッキのシャッフルを行う処理
+
                     deckCount = deckCards.Count;//一時デッキから枚数カウントを取得。
-                    DeckShuffle();
-                    if (deckCount <= 0) switchRoot = "MixingDeckCharge";
+                    DeckShuffle();// デッキシャッフルを開始する。
+                    if (deckCount <= 0) switchRoot = "MixingDeckCharge";// もしカウント値が0になるまでシャッフル処理が終わったら、次の処理"MixingDeckCharge"に移行する。
                     break;
+
                 case "MixingDeckCharge":// シャッフルしたデッキを本デッキに補充を行う処理
                     deckCards = new List<SpellData>(depositDeck);
                     depositDeck.Clear();
                     switchRoot = "CardDraw";
                     break;
+
                 case "CardDraw":// 本デッキからカードを取り出し、手札に入れる。
                     HandDraw();
                     break;
+
                 case "HundFalldToLoad"://手札をすべて破棄し、クールタイムを発生させた後にCardDrowに移行する。
                     HundFalldToLoad();
                     break;
 
+
                 case "DrawCoolTime"://ドロー時に発生する時間経過処理。
                     DrowingTime();
                     break;
+
                 case "DeckReloadingTime"://デッキリロード時に発生する時間経過処理。
                     DeckReloadingTime();
                     break;
@@ -149,26 +214,24 @@ public class HandCardManager : MonoBehaviour
                     break;
             }
 
-            LockOnProcessing();//ロックオン時の処理を行う。
+            LockOnProcessing();//ロックオンの処理を行う。
         }
     }
 
-    public void SetUp()//Startで処理する内容。
+    public void SetUp()// Startで処理する内容。
     {
         Debug.Log("セットアップしてます");
-        drawCT_max = 1.4f;　　　　　　// ドローに必要な時間を1.4秒に設定。
+        drawCT_max = 1.2f;　　　　　　// ドローに必要な時間を1.2秒に設定。
         deckReloadCT_basisTime = 3.0f;// リロードに必要な時間を3.0秒に設定。
+
+        lockOnDistance = 30.0f;// ロックオンできる距離を設定。
+
         //初期化。
         deckReloadCT_sumTime = 0;
         cooltime_Text.enabled = false;
         cooltime_FillImage.enabled = false;
         lockOnLineInstPoint = (gameObject.transform.localScale.y * -0.9f) + gameObject.transform.position.y;//ロックオン時の描写線の高さを設定。
-        //
-
-        statusManager = GetComponent<StatusManager>();
-
-        playingData = GetComponent<PlayingData>();
-
+ 
         //デッキデータを入れる。
         if (playingData.onHandDeckDate.Count == 0)
         {
@@ -180,10 +243,7 @@ public class HandCardManager : MonoBehaviour
             deckCards = new List<SpellData>(playingData.onHandDeckDate);
         }
 
-        if (lineRenderer == null) lineRenderer = GetComponent<LineRenderer>();//コンポ―ネントを取得。
         lineRenderer.enabled = false;//コンポーネントの無効化。
-
-        audioSource = GetComponent<AudioSource>();
 
         depositDeck.Clear();
         handCards.Clear();
@@ -192,66 +252,23 @@ public class HandCardManager : MonoBehaviour
 
         switchRoot = "DeckShuffle";
     }
+    
 
-    void Standby()//プレイヤーの入力を受け付ける。
+    void Standby()// プレイヤーの入力を受け付ける。
     {
         if (standbySW == false) standbySW = true;//スタンバイ状態になる。
 
-        //ピックウィンドウ上のカードが消費コストを満たしている場合カバー画像を非表示にする。
+        // ピックウィンドウ上のカードが消費コストを満たしている場合カバー画像を非表示にする。
         if (statusManager.manaPoint >= handCards[0].manaCost && CastCardCover.enabled == true) CastCardCover.enabled = false;
         else if (statusManager.manaPoint < handCards[0].manaCost && CastCardCover.enabled == false) CastCardCover.enabled = true;
 
         if (handCards[0] == noneCardData)//ハンドケース内のカード数が0場合。
         {
-            standbySW = false;//スタンバイ状態を無効化する。
-            switchRoot = "HundFalldToLoad";//手札の手前がnoneCardDateだった場合、ドローを行う。
+            standbySW = false;// スタンバイ状態を無効化する。
+            switchRoot = "HundFalldToLoad";// 手札の手前がnoneCardDateだった場合、ドローを行う。
         }
     }
 
-
-    void HandCard_Cast()//カード使用
-    {
-        if (handCards.Count >= 0)
-        {
-            standbySW = false;//standby状態を無効化する。
-
-            castPanelAnimator.SetTrigger("CastTrigger");//アニメーションを再生。
-
-            Vector3 vc3InstPos = 
-                instPos.transform.position;//InstObjをVector3に変換、格納。
-
-            GameObject instPrefab = 
-                Instantiate(handCards[0].spellPrefab, vc3InstPos, instPos.transform.rotation);//カードデータを元にプレハブを生成する。
-
-            instPrefab.GetComponent<SpellPrefabManager>().ownerObject = gameObject;//スペルプレハブマネージャーにオブジェクト情報を渡す。
-
-            //使用したカードを減らす処理。
-            handCards.RemoveAt(0);
-            pickWindow[handCards.Count - 1].CardRefresh();
-            handCards.Add(noneCardData);
-
-            HundWindowRefresh();
-
-        }
-    }
-
-    void HandCard_Trash()//カード破棄
-    {
-        if (handCards.Count >= 0)
-        {
-            castPanelAnimator.SetTrigger("TrashTrigger");//アニメーションを再生。
-            audioSource.PlayOneShot(cardFoldSE);//音を鳴らす。
-            statusManager.Mana_Inflict_Revenue(handCards[0].trashMana);//マナポイントの取得。
-
-            //使用したカードを減らす処理。
-            handCards.RemoveAt(0);
-            pickWindow[handCards.Count - 1].CardRefresh();
-            handCards.Add(noneCardData);
-
-            HundWindowRefresh();
-
-        }
-    }
 
     void DeckShuffle()//デッキシャッフル
     {
@@ -265,9 +282,9 @@ public class HandCardManager : MonoBehaviour
     }
     
 
-    public void HundWindowRefresh()//手札の再読み込み。これにより今持っている手札の画像が更新される。
+    public void HundWindowRefresh()// 手札の再読み込み。これにより今持っている手札の画像が更新される。
     {
-        for (int i = 0; i < handCards.Count; i++)
+        for (int i = 0; i < handCards.Count; i++)// 手札の枚数分 処理を走らせる。
         {
             pickWindow[i].cardDate = handCards[i];
             pickWindow[i].CardRefresh();
@@ -281,7 +298,7 @@ public class HandCardManager : MonoBehaviour
                 manaCostWindow[i].text = string.Format("{00}", handCards[i].manaCost);
             }
 
-            if(i == 0)//最初の処理限定。
+            if(i == 0)// 最初の処理限定。
             {
                 if (handCards[0] == noneCardData)
                 {
@@ -302,7 +319,8 @@ public class HandCardManager : MonoBehaviour
         switchRoot = default;
     }
 
-    void HandDraw()//デッキから手札にカードデータを渡す。
+
+    void HandDraw()// デッキから手札にカードデータを渡す。
     {
 
         for(int i = 0; i < handCard_max; i++)
@@ -320,9 +338,10 @@ public class HandCardManager : MonoBehaviour
         HundWindowRefresh();
     }
 
-    void HundFalldToLoad()//手札を破棄する処理。またそこから山札(デッキ)からカードをドローする処理につなげる。
+
+    void HundFalldToLoad()// 手札を破棄する処理。またそこから山札(デッキ)からカードをドローする処理につなげる。
     {
-        if (deckCards.Count > 0)//デッキ内にカードが有り、ドローが可能な場合。
+        if (deckCards.Count > 0)// デッキ内にカードが有り、ドローが可能な場合。
         {
             handCards.Clear();
 
@@ -377,6 +396,7 @@ public class HandCardManager : MonoBehaviour
         }
     }
 
+
     void DrowingTime()//手札がドローされるまでの時間処理。
     {
         if(drawCT >= 0)
@@ -409,6 +429,7 @@ public class HandCardManager : MonoBehaviour
             //switchRoot = "CardDraw";
         }
     }
+
 
     void DeckReloadingTime()//山札がシャッフルされるまでの時間処理。
     {
@@ -443,77 +464,129 @@ public class HandCardManager : MonoBehaviour
         }
     }
 
-    ////新式入力。---------------------------------------------
 
-    public void CardCast(InputAction.CallbackContext context)//カード使用
-    {
-        if(HCM_ProcessSafety == false)
-        {
-            if (context.performed)
-            {
-                if (statusManager.shockSt == false)
-                {
-                    if (standbySW == true)
-                    {
-                        if (context.phase == InputActionPhase.Performed)
-                        {
-                            if (statusManager.manaPoint >= handCards[0].manaCost)
-                            {
-                                statusManager.Mana_Inflict_Expense(handCards[0].manaCost);//コストを消費する。
-                                HandCard_Cast();//処理を開始。
-                                Debug.Log("カード使用");
-                                standbySW = false;
-                            }
-                            else
-                            {
-                                Debug.Log(gameObject + ">> スペル使用に必要なマナが足りない。");
-                                manaCostWindow_0_Animator.SetTrigger("CostNonEnough_Trigger");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-    }
+    ////--------------------------------------------------
 
-    public void CardTrash(InputAction.CallbackContext context)//カード破棄
+    //// カードの使用 ////--------------------------------
+    
+    public void CardCast(InputAction.CallbackContext context)// カード使用の入力受付
     {
         if (HCM_ProcessSafety == false)
         {
-            if (context.performed)
+            if (statusManager.shockSt == false)// ステータス ショック状態かどうか
             {
-                if (statusManager.shockSt == false)
+                if (standbySW == true)
                 {
-                    if (standbySW == true)
+                    if (context.phase == InputActionPhase.Performed)// ボタンを押したときに一度だけ実行する。
                     {
-                        if (context.phase == InputActionPhase.Performed)
+                        if (statusManager.manaPoint >= handCards[0].manaCost)
                         {
-                            HandCard_Trash();//処理を開始。
-                            Debug.Log("カード破棄");
+                            statusManager.Mana_Inflict_Expense(handCards[0].manaCost);//コストを消費する。
+                            HandCard_Cast_Process();//処理を開始。
+
+                            // Debug.Log("カード使用");
+
                             standbySW = false;
                         }
+                        else
+                        {
+                            // Debug.Log(gameObject + ">> スペル使用に必要なマナが足りない。");
+                            manaCostWindow_0_Animator.SetTrigger("CostNonEnough_Trigger");
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    void HandCard_Cast_Process()// カード使用の処理。
+    {
+        if (handCards.Count >= 0)
+        {
+            standbySW = false;//standby状態を無効化する。
+
+            castPanelAnimator.SetTrigger("CastTrigger");//アニメーションを再生。
+
+            Vector3 vc3InstPos =
+                instPos.transform.position;//InstObjをVector3に変換、格納。
+
+            GameObject instPrefab =
+                Instantiate(handCards[0].spellPrefab, vc3InstPos, instPos.transform.rotation);//カードデータを元にプレハブを生成する。
+
+            instPrefab.GetComponent<SpellPrefabManager>().ownerObject = gameObject;//スペルプレハブマネージャーにオブジェクト情報を渡す。
+
+            //使用したカードを減らす処理。
+            handCards.RemoveAt(0);
+            pickWindow[handCards.Count - 1].CardRefresh();
+            handCards.Add(noneCardData);
+
+            HundWindowRefresh();
+
+        }
+    }
+
+
+    ////--------------------------------------------------
+
+    //// カードの破棄 ////--------------------------------
+
+    public void CardTrash(InputAction.CallbackContext context)// カード破棄の入力受付
+    {
+        if (HCM_ProcessSafety == false)
+        {
+            if (statusManager.shockSt == false)// ステータス ショック状態かどうか。
+            {
+                if (standbySW == true)
+                {
+                    if (context.phase == InputActionPhase.Performed)// ボタンを押したときに一度だけ実行する。
+                    {
+                        HandCard_Trash_Process();//処理を開始。
+
+                        //Debug.Log("カード破棄");
+
+                        standbySW = false;
                     }
                 }
             }
         }
     }
 
-    //// ロックオンアクションの処理関係。
-    //
+    void HandCard_Trash_Process()// カード破棄の処理
+    {
+        if (handCards.Count >= 0)
+        {
+            castPanelAnimator.SetTrigger("TrashTrigger");//アニメーションを再生。
+            audioSource.PlayOneShot(cardFoldSE);//音を鳴らす。
+            statusManager.Mana_Inflict_Revenue(handCards[0].trashMana);//マナポイントの取得。
+
+            //使用したカードを減らす処理。
+            handCards.RemoveAt(0);
+            pickWindow[handCards.Count - 1].CardRefresh();
+            handCards.Add(noneCardData);
+
+            HundWindowRefresh();
+
+        }
+    }
+
+
+    ////--------------------------------------------------
+
+    //// ロックオンアクション ////------------------------
+
     public void LockOnSearch(InputAction.CallbackContext context)//ロックオンを行う。
     {
         if (HCM_ProcessSafety == false)
         {
-            if (context.performed)
+            if (context.phase == InputActionPhase.Performed)
             {
                 if (lockOnTarget == null && canlockOnSW == true)
                 {
-                    lockOnDistance = 30.0f;//テストでロックオンできる距離を設定。
-
                     Vector3 ori = gameObject.transform.position;
                     Ray ray = new Ray(ori, transform.forward);
-                    int layerMask = ~LayerMask.GetMask(new string[] { "Default", "StructureObject", "InstObject", "Search",gameObject.tag});//Layer判定から除外する。タグ名とレイヤー名が同じである事が必須。
+
+                    int layerMask = ~LayerMask.GetMask(new string[] { "Default", "StructureObject", "InstObject", "Search",gameObject.tag});//非対象のLayerを除外する。
                     RaycastHit hit;
 
                     if (Physics.BoxCast(transform.position, new Vector3(1.5f, 1.5f, 1.5f), transform.forward, out hit, Quaternion.identity, lockOnDistance, layerMask))
@@ -527,7 +600,9 @@ public class HandCardManager : MonoBehaviour
                             lockOnTarget = hit.transform.gameObject;
                             if (playerMoving == null) playerMoving = GetComponent<PlayerMoving>();
                             playerMoving.lockOnTargetObj = lockOnTarget;
-                            cantLockOnTime = 0.2f;//クールタイムを設定。
+
+                            cantLockOnTime = 0.2f;//クールタイムを設定。通常より短期間のクールタイム。
+
                             canlockOnSW = false;//ロックオンを不可能にする。
 
                             if (TargetSM == null) TargetSM = lockOnTarget.GetComponent<StatusManager>();//ターゲットを取得。
@@ -575,8 +650,6 @@ public class HandCardManager : MonoBehaviour
             int layerMask = LayerMask.GetMask(new string[] { "Default","StructureObject", "InstObject",target.tag}); //Layer判定を設定する。タグ名とレイヤー名が同じである事が必須。
             RaycastHit hit;
 
-            //Debug.DrawRay(ray.origin, ray.direction * lockOnDistance, Color.red, 0.2f);//テスト機能。飛ばしたRayの軌道を見る。
-
             if (Physics.Raycast(ray, out hit, lockOnDistance,layerMask))
             {
 
@@ -616,7 +689,9 @@ public class HandCardManager : MonoBehaviour
         TargetSM = null;
         if (playerMoving == null) playerMoving = GetComponent<PlayerMoving>();
         playerMoving.lockOnTargetObj = lockOnTarget;
-        cantLockOnTime = 1f;//クールタイムを設定。
+
+        cantLockOnTime = 0.5f;//クールタイムを設定。
+
         canlockOnSW = false;//ロックオンを不可能にする。
     }
 
@@ -637,5 +712,6 @@ public class HandCardManager : MonoBehaviour
             lineRenderer.endWidth = lineSize;
         }
     }
-    
+
+    ////--------------------------------------------------
 }

@@ -82,7 +82,7 @@ public class PlayerGSWInput : MonoBehaviour
         dynamic_Cursor_rtf = dynamic_pickCursorObj.GetComponent<RectTransform>();
         dynamic_Cursor_img = dynamic_pickCursorObj.GetComponent<Image>();
 
-        PlayerInput playerInput = GetComponent<PlayerInput>();//本体以外からの入力で動く為一時コメントアウト。
+        PlayerInput playerInput = GetComponent<PlayerInput>();
         selectMove = playerInput.actions["SelectMove"];//指定する入力
 
         backGroundNumber.sprite = backNumber_Sprite[playingData.playerNumber];//選択状態ジに表示する番号を変更。
@@ -388,7 +388,7 @@ public class PlayerGSWInput : MonoBehaviour
     {
         if(nowSelectChoiceInt == 1)//１(上)を選択
         {
-            Debug.Log("上を選択。");
+            //Debug.Log("上を選択。");
             if (loadType == "SpellDate")//もし呼び出しタイプが"SpellDate"であれば、
             {
                 //ここにデッキに加える、
@@ -401,7 +401,7 @@ public class PlayerGSWInput : MonoBehaviour
         }
         else if(nowSelectChoiceInt == 2)//２(下)を選択
         {
-            Debug.Log("下を選択。");
+            //Debug.Log("下を選択。");
             if (loadType == "SpellDate")//もし呼び出しタイプが"SpellDate"であれば、
             {
                 //ここにデッキに加える、
@@ -414,7 +414,7 @@ public class PlayerGSWInput : MonoBehaviour
         }
         else if(nowSelectChoiceInt == 3)//３(左)を選択
         {
-            Debug.Log("左を選択。");
+            //Debug.Log("左を選択。");
             if (loadType == "SpellDate")//もし呼び出しタイプが"SpellDate"であれば、
             {
                 //ここにデッキに加える、
@@ -427,7 +427,7 @@ public class PlayerGSWInput : MonoBehaviour
         }
         else if(nowSelectChoiceInt == 4)//４(右)を選択
         {
-            Debug.Log("右を選択。");
+            //Debug.Log("右を選択。");
             if (loadType == "SpellDate")//もし呼び出しタイプが"SpellDate"であれば、
             {
                 //ここにデッキに加える、
@@ -440,7 +440,7 @@ public class PlayerGSWInput : MonoBehaviour
         }
         else if(nowSelectChoiceInt == 0)//未選択。
         {
-            Debug.Log("未選択");
+            //Debug.Log("未選択");
         }
     }
 

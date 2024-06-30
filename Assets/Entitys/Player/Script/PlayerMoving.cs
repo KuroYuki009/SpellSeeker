@@ -25,6 +25,9 @@ public class PlayerMoving : MonoBehaviour
     float moveSpeed;//移動速度
     float moveMag = 1.0f;//移動速度倍率。
 
+    // ロックオン時の対象への追従値。
+    float lockonLookFollowValue;
+
     //状態値。StatusManagerから取得する必要がある。
     bool noMoveSts;//行動不可状態か。
     bool shockSts;//ショック状態か。
@@ -52,8 +55,10 @@ public class PlayerMoving : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         sdAtDeadZone = 0.30f;
+        lockonLookFollowValue = 0.32f;
+
         //inputSystemを接続する。
-        PlayerInput playerInput = GetComponent<PlayerInput>();//本体以外からの入力で動く為一時コメントアウト。
+        PlayerInput playerInput = GetComponent<PlayerInput>();
         move = playerInput.actions["Move"];
         look = playerInput.actions["Look"];
 
@@ -69,11 +74,11 @@ public class PlayerMoving : MonoBehaviour
 
     void Update()
     {
-        Define();//各変数の接続を行う。
+        Define();// 各変数の接続を行う。
 
-        MovingProcessing();//操作時の処理を行う。
+        MovingProcessing();// 操作時の処理を行う。
 
-        SdAcProcessing();//セカンダリアクションの処理を行う。
+        SdAcProcessing();// セカンダリアクションの処理を行う。
     }
 
     public void CameraSearch()
@@ -121,10 +126,6 @@ public class PlayerMoving : MonoBehaviour
             {
                 if (lookInput != Vector2.zero)
                 {
-                    // 旧操作
-                    //Vector3 cv = new Vector3(lookInput.x, 0, lookInput.y);
-
-                    // 新操作
                     look_forwardPointVc3 = cameraForward * lookInput.y + visCamera.transform.right * lookInput.x;
                     
                     Quaternion qt = Quaternion.LookRotation(look_forwardPointVc3);
@@ -136,10 +137,10 @@ public class PlayerMoving : MonoBehaviour
                     transform.rotation = Quaternion.Lerp(transform.rotation, qt, 0.5f);
                 }
             }
-            else if (lockOnTargetObj != null)
+            else if (lockOnTargetObj != null)// ロックオン 捕捉対象がいる場合
             {
                 Quaternion qton = Quaternion.LookRotation(lockOnTargetObj.transform.position - transform.position);
-                transform.rotation = Quaternion.Lerp(transform.rotation, qton, 0.2f);//ロックオン時の相手への向き固定値。
+                transform.rotation = Quaternion.Lerp(transform.rotation, qton, lockonLookFollowValue);
             }
 
             ////追加要素。

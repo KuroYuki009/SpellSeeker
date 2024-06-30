@@ -56,6 +56,7 @@ public class StatusManager : MonoBehaviour
 
     void Start()
     {
+        //‰Šú’l‚ğİ’è‚·‚éB
         manaWantTime = 1.5f;
         maxManaPoint = 5;
         maxSpeed = 15;//Default = 15

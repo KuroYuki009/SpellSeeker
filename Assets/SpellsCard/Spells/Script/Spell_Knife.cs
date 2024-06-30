@@ -77,9 +77,11 @@ public class Spell_Knife : MonoBehaviour
             if (other.transform.GetComponent<StatusManager>() != null)
             {
                 var otherSM = other.GetComponent<StatusManager>();
-                otherSM.HP_Inflict_Damage(damage);//ダメージを発生させる。
-                otherSM.St_Inflict_Shock(0.2f, 1);//ショック状態レベル1を0.2秒与える。
-                otherSM.St_Inflict_Vulnerable(4.0f);//脆弱状態を4秒与える。
+
+                otherSM.HP_Inflict_Damage(damage);// ダメージを発生させる。
+                otherSM.St_Inflict_Shock(0.2f, 1);// ショック状態レベル1を0.2秒与える。
+                otherSM.St_Inflict_Vulnerable(4.0f);// 脆弱状態を4秒与える。
+
                 //otherSM.St_Inflict_Invincible(0.4f);//0.2秒の無敵時間を付与する。
 
                 AudioSource otherAS = other.transform.GetComponent<AudioSource>();
@@ -91,7 +93,7 @@ public class Spell_Knife : MonoBehaviour
             }
             else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
             {
-                //何も起こしません。
+                // 何も起こしません。
             }
             else
             {

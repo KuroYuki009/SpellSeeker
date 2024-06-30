@@ -71,9 +71,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8562265078963960276}
-  - component: {fileID: -9031337217190515723}
   - component: {fileID: 2888575518231923701}
   - component: {fileID: 7863643349339103896}
+  - component: {fileID: -9031337217190515723}
   m_Layer: 0
   m_Name: Spell_Gatling
   m_TagString: Untagged
@@ -100,6 +100,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2888575518231923701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319456491432358116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerObject: {fileID: 0}
+--- !u!114 &7863643349339103896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319456491432358116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b32ec14aba22e4ba828102e51077f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellDate: {fileID: 11400000, guid: de4e38f80e94b6844b94ca2ef0529a75, type: 2}
+  magazineSizeInt: 12
+  instBulletObject: {fileID: 8417767242948538096, guid: 9122b3a4cc98b3f40b74840d0066db30,
+    type: 3}
+  instBarrelTF:
+  - {fileID: 8895449234370033030}
+  - {fileID: 1546305822246936074}
+  - {fileID: 3455107112745746001}
+  - {fileID: 7355625135649704051}
+  shotEffect: {fileID: 5848313087086787502, guid: 603f2234a47d6194eba300bd0e48c368,
+    type: 3}
+  shotSE: {fileID: 8300000, guid: db7541d14e3e60246b1bc953f730ecec, type: 3}
+  ownerSM: {fileID: 0}
 --- !u!82 &-9031337217190515723
 AudioSource:
   m_ObjectHideFlags: 0
@@ -112,13 +150,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 120
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -156,7 +194,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -196,44 +234,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2888575518231923701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2319456491432358116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObject: {fileID: 0}
---- !u!114 &7863643349339103896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2319456491432358116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b32ec14aba22e4ba828102e51077f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellDate: {fileID: 11400000, guid: de4e38f80e94b6844b94ca2ef0529a75, type: 2}
-  magazineSizeInt: 12
-  instBulletObject: {fileID: 8417767242948538096, guid: 9122b3a4cc98b3f40b74840d0066db30,
-    type: 3}
-  instBarrelTF:
-  - {fileID: 8895449234370033030}
-  - {fileID: 1546305822246936074}
-  - {fileID: 3455107112745746001}
-  - {fileID: 7355625135649704051}
-  shotEffect: {fileID: 5848313087086787502, guid: 603f2234a47d6194eba300bd0e48c368,
-    type: 3}
-  shotSE: {fileID: 8300000, guid: db7541d14e3e60246b1bc953f730ecec, type: 3}
-  ownerSM: {fileID: 0}
 --- !u!1 &5256395466358396955
 GameObject:
   m_ObjectHideFlags: 0
