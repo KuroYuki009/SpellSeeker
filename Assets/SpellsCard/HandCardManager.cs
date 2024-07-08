@@ -63,7 +63,7 @@ public class HandCardManager : MonoBehaviour
     public Animator manaCostWindow_0_Animator;//キャストパネル下部のマナ表示ウィンドウのAnimatorコンポーネント。
 
     [Tooltip("各マグパネルに 存在してる各カードのコストを表示させる為の テキスト群です。")]
-    public List<Text> manaCostWindow;//ハンドケースの各カードのコストを描写する。
+    public List<Text> manaCostText;//ハンドケースの各カードのコストを描写する。
 
     [Tooltip("デッキの 残りカード枚数を 表示するテキストです。")]
     public Text deckCountText;//デッキに含まれるカード残数
@@ -95,9 +95,9 @@ public class HandCardManager : MonoBehaviour
 
     ////--------------------------------------------------
 
+    StatusManager statusManager;//スクリプト「StatusManager」格納用。
     PlayingData playingData;//スクリプト「playingData」格納用
     PlayerMoving playerMoving;//スクリプト「playerMoving」格納用
-    StatusManager statusManager;//スクリプト「StatusManager」格納用。
 
     [HideInInspector] public LineRenderer lineRenderer;
     AudioSource audioSource;
@@ -147,6 +147,7 @@ public class HandCardManager : MonoBehaviour
     {
         statusManager = GetComponent<StatusManager>();
         playingData = GetComponent<PlayingData>();
+        playerMoving = GetComponent<PlayerMoving>();
         audioSource = GetComponent<AudioSource>();
         if (lineRenderer == null) lineRenderer = GetComponent<LineRenderer>();//コンポ―ネントを取得。
 
@@ -180,10 +181,7 @@ public class HandCardManager : MonoBehaviour
                     break;
 
                 case "DeckShuffle":// デッキのシャッフルを行う処理
-
-                    deckCount = deckCards.Count;//一時デッキから枚数カウントを取得。
                     DeckShuffle();// デッキシャッフルを開始する。
-                    if (deckCount <= 0) switchRoot = "MixingDeckCharge";// もしカウント値が0になるまでシャッフル処理が終わったら、次の処理"MixingDeckCharge"に移行する。
                     break;
 
                 case "MixingDeckCharge":// シャッフルしたデッキを本デッキに補充を行う処理
@@ -272,40 +270,48 @@ public class HandCardManager : MonoBehaviour
 
     void DeckShuffle()//デッキシャッフル
     {
-        int rundamInt = Random.Range(0, deckCount);
+        deckCount = deckCards.Count;// 一時デッキから 枚数カウントを取得。
 
-        if(deckCount > 0)
+        while (deckCount > 0)// シャッフル用のListが空になるまで処理を行う。
         {
-            depositDeck.Add(deckCards[rundamInt]);
-            deckCards.RemoveAt(rundamInt);
+            int rundamInt = Random.Range(0, deckCount);// 疑似乱数で 数字を割り出す。最大値は 元のデッキに含まれるカード枚数。
+
+            depositDeck.Add(deckCards[rundamInt]);//---// 割り出した数字の要素に含まれるカードを シャッフル用のListから インゲーム用のListに渡す。
+            deckCards.RemoveAt(rundamInt);//-----------// そして、シャッフル用のリストからカードを除外する。
+
+            deckCount = deckCards.Count;// 枚数カウントを更新。
         }
+
+        if (deckCount <= 0) switchRoot = "MixingDeckCharge";// もしカウント値が0になるまでシャッフル処理が終わったら、次の処理"MixingDeckCharge"に移行する。
     }
     
 
-    public void HundWindowRefresh()// 手札の再読み込み。これにより今持っている手札の画像が更新される。
+    public void HundWindowRefresh()// 手札の再読み込み。これにより今持っている手札の情報が更新される。
     {
         for (int i = 0; i < handCards.Count; i++)// 手札の枚数分 処理を走らせる。
         {
-            pickWindow[i].cardDate = handCards[i];
-            pickWindow[i].CardRefresh();
-            if(handCards[i] == noneCardData)
+            pickWindow[i].cardDate = handCards[i];// カードの イメージ画像を 表示させるウィンドウ側に データを渡し、
+            pickWindow[i].CardRefresh();//--------// ウィンドウ側の 表示更新関数を起動する。
+
+            if (handCards[i] == noneCardData)//---// もし、このカードが "何でもない" カードだった場合、
             {
-                manaCostWindow[i].enabled = false;
+                manaCostText[i].enabled = false;  // イメージ画像下部に表示してあるマナコストの テキストを非表示にする。
             }
-            else
+            else//--------------------------------// そうで無ければ、カードのマナコスト値を テキストに表示させる。
             {
-                if (manaCostWindow[i].enabled == false) manaCostWindow[i].enabled = true;
-                manaCostWindow[i].text = string.Format("{00}", handCards[i].manaCost);
+                manaCostText[i].enabled = true;   
+                manaCostText[i].text =　　　　　　
+                    string.Format("{00}", handCards[i].manaCost);
             }
 
-            if(i == 0)// 最初の処理限定。
+            if(i == 0)//--------------------------// 手札の中で 一番頭にあるカードであれば、
             {
-                if (handCards[0] == noneCardData)
+                if (handCards[0] == noneCardData) 
                 {
                     castCardNameText.text = " ";
                     castCardDamageText.text = " ";
                 }
-                else
+                else//----------------------------// 名前とダメージ値を 参照し、それぞれを テキストに表示させる。
                 {
                     castCardNameText.text = handCards[0].spellName;
                     if (handCards[0].damageString != null)
@@ -316,7 +322,7 @@ public class HandCardManager : MonoBehaviour
         
         deckCountText.text = string.Format("{00}", deckCards.Count);//デッキ残量表示を更新する。
 
-        switchRoot = default;
+        switchRoot = default;// この処理を終了させ、待機状態に戻る。
     }
 
 
@@ -341,22 +347,24 @@ public class HandCardManager : MonoBehaviour
 
     void HundFalldToLoad()// 手札を破棄する処理。またそこから山札(デッキ)からカードをドローする処理につなげる。
     {
+
+        handCards.Clear();// 手札のカードをすべて破棄。
+
+        audioSource.PlayOneShot(ac_HandCase_Reload_Start);//StartSEを再生する。
+
+        audioSource.loop = true;//-------------------// ループをオン。
+        audioSource.clip = ac_HandCase_Reload_Charge;// 音声を設定。
+        audioSource.Play();//------------------------// 再生。
+
         if (deckCards.Count > 0)// デッキ内にカードが有り、ドローが可能な場合。
         {
-            handCards.Clear();
-
-            audioSource.PlayOneShot(ac_HandCase_Reload_Start);//SEを再生する。
-
-            audioSource.loop = true;//ループをオンにする。
-            audioSource.clip = ac_HandCase_Reload_Charge;//bgm設定。
-            audioSource.Play();//bgm再生。
-
             for (int i = 0; i < handCard_max; i++)
             {
                 pickWindow[i].cardDate = noneCardData;
                 pickWindow[i].CardRefresh();
                 //Debug.Log("手札描写適応！");
             }
+
             drawCT = drawCT_max;//ドローに必要なクールタイムを再設定。
 
             handAnimator.SetBool("DrawBool", true);
@@ -364,18 +372,9 @@ public class HandCardManager : MonoBehaviour
         }
         else if(deckCards.Count <= 0)//デッキが0になっている場合に取得する。
         {
-            handCards.Clear();
-
-            audioSource.PlayOneShot(ac_HandCase_Reload_Start);//SEを再生する。
-
-            audioSource.loop = true;//ループをオンにする。
-            audioSource.clip = ac_HandCase_Reload_Charge;//bgm設定。
-            audioSource.Play();//bgm再生。
-
             //デッキデータを入れる。
             if (playingData.onHandDeckDate.Count == 0)
             {
-                //
                 deckCards = new List<SpellData>(deckInst.spells);
             }
             else
@@ -386,12 +385,12 @@ public class HandCardManager : MonoBehaviour
             deckReloadCT_max = deckReloadCT_basisTime + deckReloadCT_sumTime;//所要クールタイムの数値を計算。(基礎値と乗算値を合わせ。所要時間に入れる。)
             deckReloadCT_sumTime = 0;//sumTimeをゼロにする。
             deckReloadCT = deckReloadCT_max;//デッキリロードに必要なクールタイムを再設定。
+
             handAnimator.SetBool("DeckReloadBool", true);
             switchRoot = "DeckReloadingTime";//デッキリロードの処理を行う。
         }
         else
         {
-            Debug.Log("NullDeck");
             switchRoot = default;
         }
     }
@@ -583,6 +582,7 @@ public class HandCardManager : MonoBehaviour
             {
                 if (lockOnTarget == null && canlockOnSW == true)
                 {
+
                     Vector3 ori = gameObject.transform.position;
                     Ray ray = new Ray(ori, transform.forward);
 
@@ -591,15 +591,15 @@ public class HandCardManager : MonoBehaviour
 
                     if (Physics.BoxCast(transform.position, new Vector3(1.5f, 1.5f, 1.5f), transform.forward, out hit, Quaternion.identity, lockOnDistance, layerMask))
                     {
-                        if (hit.transform.GetComponent<StatusManager>() != null && hit.transform.tag != gameObject.tag)//スクリプト「StatusManager」が付いていて自身と違うタグが付いている場合に反応する。
+                        if (hit.transform.GetComponent<StatusManager>() != null && hit.transform.tag != gameObject.tag)//スクリプト「StatusManager」が付いていて、自身と違うタグが付いている場合に反応する。
                         {
                             Debug.Log("ロックオン！");
 
-                            audioSource.PlayOneShot(lockOn_InSE);//効果音を鳴らす。
+                            audioSource.PlayOneShot(lockOn_InSE);//　効果音を鳴らす。
 
-                            lockOnTarget = hit.transform.gameObject;
-                            if (playerMoving == null) playerMoving = GetComponent<PlayerMoving>();
-                            playerMoving.lockOnTargetObj = lockOnTarget;
+                            lockOnTarget = hit.transform.gameObject;// 標的の オブジェクト情報を 格納する。
+
+                            playerMoving.lockOnTargetObj = lockOnTarget;// PlayerMovingにTargetを格納。
 
                             cantLockOnTime = 0.2f;//クールタイムを設定。通常より短期間のクールタイム。
 
@@ -639,21 +639,23 @@ public class HandCardManager : MonoBehaviour
             }
         }
 
-        if(lockOnTarget != null)//ターゲットが格納されている場合は。
+        //// 敵が壁越しにいるかの確認を行う。
+        
+        if(lockOnTarget != null)// ターゲットが格納されている場合、
         {
-            LockOnLineChain();//ロックオンしているオブジェクトの間に線を生成。
-            GameObject target = lockOnTarget;
-            Vector3 pos = target.transform.position - transform.position;
+            LockOnLineChain();// ロックオンしているオブジェクトとの間に線を描写させる。
 
-            Ray ray = new Ray(transform.position, pos);//コリジョンした敵の座標をレイ目標位置に設定。
+            Vector3 pos = lockOnTarget.transform.position - transform.position;
 
-            int layerMask = LayerMask.GetMask(new string[] { "Default","StructureObject", "InstObject",target.tag}); //Layer判定を設定する。タグ名とレイヤー名が同じである事が必須。
+            Ray ray = new Ray(transform.position, pos);// 敵の座標を目標位置に設定。
+
+            int layerMask = LayerMask.GetMask(new string[] { "Default","StructureObject", "InstObject",lockOnTarget.tag}); // Layer判定を設定する。タグ名とレイヤー名が同じである事が必須。
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, lockOnDistance,layerMask))
             {
 
-                if (hit.collider.gameObject != target)//もしロックオンしているオブジェクトが壁越しになると。
+                if (hit.collider.gameObject != lockOnTarget)//もしロックオンしているオブジェクトが壁越しになると。
                 {
                     //ロックオン解除までの時間経過、処理を行う。
 

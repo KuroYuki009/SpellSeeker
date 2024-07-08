@@ -121,7 +121,7 @@ public class PlayerMoving : MonoBehaviour
             }
 
             ////キャラ向き処理。
-            // キャラクターの向きを進行方向に
+            //
             if (lockOnTargetObj == null)
             {
                 if (lookInput != Vector2.zero)

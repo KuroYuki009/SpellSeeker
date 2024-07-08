@@ -164,8 +164,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
     type: 3}
-  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
-    type: 3}
   hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
   ownerObj: {fileID: 0}
   ownerTag: 

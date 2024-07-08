@@ -508,7 +508,7 @@ MonoBehaviour:
   noneCardData: {fileID: 11400000, guid: 5beb695ca9e5f6a4ab4e5b2c1116c37c, type: 2}
   CastCardCover: {fileID: 6633939955169900289}
   manaCostWindow_0_Animator: {fileID: 3257798169757914169}
-  manaCostWindow:
+  manaCostText:
   - {fileID: 6345202430484535970}
   - {fileID: 615872359934368562}
   - {fileID: 1326167088046742794}
@@ -787,6 +787,7 @@ MonoBehaviour:
   - {fileID: 1525214670195978195}
   - {fileID: 1474044991771481739}
   colorPanel_Image: {fileID: 8808538001331609281}
+  colorPanel_Text: {fileID: 681480765146862113}
   colorDate:
   - serializedVersion: 2
     rgba: 4288032255
@@ -1488,7 +1489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2599473852945398126
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4066,7 +4067,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6112100517636323970
 RectTransform:
   m_ObjectHideFlags: 0
