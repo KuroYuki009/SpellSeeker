@@ -84,10 +84,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8359140956301027171}
-  - component: {fileID: 951072371234671731}
-  - component: {fileID: -8500944316550144922}
   - component: {fileID: 7012536510979748485}
   - component: {fileID: 611483447520131499}
+  - component: {fileID: 951072371234671731}
+  - component: {fileID: -8500944316550144922}
   - component: {fileID: 3149029868023880474}
   - component: {fileID: 1948551222881648599}
   m_Layer: 13
@@ -114,6 +114,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7012536510979748485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3074645848115198219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerObject: {fileID: 0}
+--- !u!114 &611483447520131499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3074645848115198219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf1cd2e5150c0694aa909236a99b3540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellDate: {fileID: 11400000, guid: 8bcf063869881ef4ab46d2487481c721, type: 2}
+  GeneEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
+    type: 3}
+  shotEffect: {fileID: 1134729940570849436, guid: 0e3fc3deaabb2fe4787d3bb21b13b522,
+    type: 3}
+  standbyEffect: {fileID: 8575972590327113164, guid: fea6825473218f541a953209262cc0e4,
+    type: 3}
+  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
+    type: 3}
+  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
+    type: 3}
+  instSE: {fileID: 8300000, guid: a4c366be50eaa874a817f1da4326a9fe, type: 3}
+  flyingSE: {fileID: 8300000, guid: e00dd9527a2fe924191895e049e7cfa0, type: 3}
+  lockonSE: {fileID: 8300000, guid: 8c48ba8fd6fbb9c44bf048224c1f581b, type: 3}
+  shotSE: {fileID: 8300000, guid: f87c9485141616b4bb0859d91f7914f1, type: 3}
+  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
+  animator: {fileID: 1591724054854245484}
+  laserShootPos: {fileID: 8973306067533005513}
+  ownerObj: {fileID: 0}
 --- !u!54 &951072371234671731
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -237,53 +281,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7012536510979748485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3074645848115198219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObject: {fileID: 0}
---- !u!114 &611483447520131499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3074645848115198219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf1cd2e5150c0694aa909236a99b3540, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellDate: {fileID: 11400000, guid: 8bcf063869881ef4ab46d2487481c721, type: 2}
-  ownerObj: {fileID: 0}
-  GeneEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
-    type: 3}
-  shotEffect: {fileID: 1134729940570849436, guid: 0e3fc3deaabb2fe4787d3bb21b13b522,
-    type: 3}
-  standbyEffect: {fileID: 8575972590327113164, guid: fea6825473218f541a953209262cc0e4,
-    type: 3}
-  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
-    type: 3}
-  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
-    type: 3}
-  animator: {fileID: 1591724054854245484}
-  laserShootPos: {fileID: 8973306067533005513}
-  switchRoute: 
-  targetObj: {fileID: 0}
-  searchSW: 0
-  instSE: {fileID: 8300000, guid: a4c366be50eaa874a817f1da4326a9fe, type: 3}
-  flyingSE: {fileID: 8300000, guid: e00dd9527a2fe924191895e049e7cfa0, type: 3}
-  lockonSE: {fileID: 8300000, guid: 8c48ba8fd6fbb9c44bf048224c1f581b, type: 3}
-  shotSE: {fileID: 8300000, guid: f87c9485141616b4bb0859d91f7914f1, type: 3}
-  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
 --- !u!136 &3149029868023880474
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -303,8 +300,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 8
-  m_Height: 20
+  m_Radius: 10
+  m_Height: 24
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!120 &1948551222881648599
@@ -316,7 +313,7 @@ LineRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3074645848115198219}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0

@@ -35,7 +35,7 @@ public class Spell_ShiftDash : MonoBehaviour
         sm = ownerObj.GetComponent<StatusManager>();//Š—LÒ‚Ìsm‚ğæ“¾B
         pm = ownerObj.GetComponent<PlayerMoving>();
 
-        forwardVc3 = pm.forwardVc3;
+        forwardVc3 = pm.move_forwardPointVc3;
 
         moveMag = sm.moveMag;
         maxSpeed = sm.maxSpeed;

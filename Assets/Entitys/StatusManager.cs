@@ -56,10 +56,11 @@ public class StatusManager : MonoBehaviour
 
     void Start()
     {
+        //‰Šú’l‚ğİ’è‚·‚éB
         manaWantTime = 1.5f;
         maxManaPoint = 5;
-        maxSpeed = 15;//Default = 5
-        moveSpeed = 15;//Default = 25
+        maxSpeed = 15;//Default = 15
+        moveSpeed = 15;//Default = 15
         hitPoint_Empty = false;
     }
     void Update()

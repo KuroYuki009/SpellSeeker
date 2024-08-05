@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable/Create PlayerStatusDate")]
-public class PlayerStatusDate : ScriptableObject
+[CreateAssetMenu(menuName = "Scriptable/Create StatusDate")]
+public class StatusDate : ScriptableObject
 {
     //î•ñ
     public int maxHitPoint;//‘Ì—Í‚ÌÅ‘å’lB

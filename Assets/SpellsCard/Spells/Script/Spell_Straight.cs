@@ -4,26 +4,47 @@ using UnityEngine;
 
 public class Spell_Straight : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
 
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("射撃時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;// 射撃時のエフェクト
+
+    [Tooltip("対象に ヒットした際に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;// 対象へのヒットエフェクト
+
+    [Tooltip("何かしらに ヒットした際に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;// 他オブジェクトへのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("射撃時に 再生させるサウンドです。")]
+    public AudioClip shotSE;// 射撃時の効果音。
+
+    [Tooltip("何かしらにヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;// ヒット時の効果音。
+    #endregion
+
+    ////--------------------------------------------------
+    
     SpellPrefabManager spm;
-    GameObject ownerObj;
-    string ownerTag;
 
-    public LineRenderer tr;
+    LineRenderer tr;
 
-    public ParticleSystem shotEffect;//射撃時のエフェクト
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
+    GameObject ownerObj;//所有者オブジェクト。
+    string ownerTag;//所有者のタグ
 
-    int damage;
+    int damage;//対象に与えるダメージ値 変数。
 
-    bool shotSW;//撃った後か。
+    bool shotSW;//射撃したかの二極値。
 
-    //
-    public AudioClip shotSE;
-    public AudioClip hitSE;
-
+    ////--------------------------------------------------
+    
     void Start()
     {
         spm = GetComponent<SpellPrefabManager>();
@@ -34,8 +55,6 @@ public class Spell_Straight : MonoBehaviour
         gameObject.layer = ownerObj.layer;//所有者のレイヤーをこのオブジェクトに渡す。
         ownerTag = spm.ownerObject.tag;//所有者のタグを格納する。
 
-        //ownerObj.GetComponent<StatusManager>().St_Inflict_NoMove(0.2f);//所有者に移動不可を付与する。
-
         Instantiate(shotEffect, transform.position,transform.rotation);
 
         AudioSource ownerAS = ownerObj.GetComponent<AudioSource>();
@@ -43,6 +62,7 @@ public class Spell_Straight : MonoBehaviour
 
         tr.startWidth = 0.4f;
         tr.endWidth = 0.4f;
+
     }
 
     private void Update()
@@ -61,29 +81,30 @@ public class Spell_Straight : MonoBehaviour
             int outMask = ~LayerMask.GetMask(new string[] { "Search",ownerTag });//所有者タグ名と同じレイヤーを除外。
 
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, 30f,outMask))
             {
-                
+                string hitObjectTag = hit.transform.tag;//ヒット対象のタグを検出。
+                StatusManager hitObjectStatusM = null;
+
+                if (hit.transform.GetComponent<StatusManager>() != null) hitObjectStatusM = hit.transform.GetComponent<StatusManager>();// StatusManager SCを持っていたらそのままキャッシュ。
+
                 tr.SetPosition(0, gameObject.transform.position);
                 tr.SetPosition(1, hit.point);
                 tr.enabled = true;
 
-                if (hit.transform.GetComponent<StatusManager>() != null && hit.transform.tag != ownerTag)
+                if (hitObjectStatusM != null && hitObjectTag != ownerTag)
                 {
                     AudioSource hitAS = hit.transform.GetComponent<AudioSource>();
                     hitAS.PlayOneShot(hitSE);
 
                     Instantiate(targetHitEffect, hit.transform.position, Quaternion.identity);//当たったエフェクト
-                    hit.transform.GetComponent<StatusManager>().HP_Inflict_Damage(damage);//40ダメージを発生させる。
+                    hitObjectStatusM.HP_Inflict_Damage(damage);//40ダメージを発生させる。
                 }
-                else
-                {
-                    Instantiate(hitEffect, hit.point, Quaternion.identity);//エフェクトを生成。
-                }    
+                else Instantiate(hitEffect, hit.point, Quaternion.identity);//エフェクトを生成。
+
                 shotSW = true;
 
-                //string name = hit.collider.gameObject.name;//ヒットしたオブジェクトの名前を格納。
-                //Debug.Log(name);//ヒットしたオブジェクトの名前をログに出す。
             }
         }
         else if(shotSW == true)

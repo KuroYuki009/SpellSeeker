@@ -27,7 +27,9 @@ public class ArtemisColliJudge : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag != ownerTag && other.tag != "Search")
+        string hitObjectTag = other.tag;
+
+        if (hitObjectTag != ownerTag && hitObjectTag != "Search")
         {
             if (other.transform.GetComponent<StatusManager>() != null)
             {
@@ -40,10 +42,17 @@ public class ArtemisColliJudge : MonoBehaviour
                 otherAS.PlayOneShot(hitSE);
 
                 Instantiate(hitDamageEffect, other.transform.position, Quaternion.identity);
+                Destroy(meinObj.gameObject);
             }
-            else Instantiate(hitEffect, transform.position, Quaternion.identity);
-
-            Destroy(meinObj.gameObject);
+            else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+            {
+                //何も起こしません。
+            }
+            else
+            {
+                Instantiate(hitEffect, transform.position, Quaternion.identity);
+                Destroy(meinObj.gameObject);
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ public class PlayerPreparationInputDate : MonoBehaviour
     int tree_CharaCustomInt_Main_Min = -1;//キャラカスタムの最小値
     */
     int tree_CharaCustomInt_VC_Int;//キャラカスタム内のビジュアルカラーで使用される行。
-    int tree_CharaCustomInt_VC_Max = 8;//ビジュアルカラーの最大値。
+    int tree_CharaCustomInt_VC_Max = 7;//ビジュアルカラーの最大値。
     int tree_CharaCustomInt_VC_Min = 0;//ビジュアルカラーの最小値。
     /*
     //パレットカスタム数値。
@@ -54,12 +54,14 @@ public class PlayerPreparationInputDate : MonoBehaviour
     // public bool palletCustomSW;//パレットカスタマイズに移動しているかを二極値で表している。
     public bool readySW;//準備完了に移動しているかを二極値で表している。
 
-    public List<GameObject> pick_Cursor_sprite;//カーソルスプライトを切り替える。アタッチ必須。
+    public List<GameObject> pick_Cursor_sprite;//カーソルスプライトを切り替える。
 
-    public Image colorPanel_Image;//イメージカラーを変更する際の描写Image。アタッチ必須。
+    public Image colorPanel_Image;//イメージカラーを変更する際の描写Image。
+    public Text colorPanel_Text;//イメージカラーを変更する際の描写Image。
+
     public List<Color32> colorDate;//イメージカラーを変更する際に参照する場所。
 
-    public Image PCW_WindowBackImage;//ウィンドウの背景イメージ。アタッチ必須。
+    public Image PCW_WindowBackImage;//ウィンドウの背景イメージ。
     public GameObject Ready_ImageGroup;//「準備完了」を意味するイメージ。
     public Image Ready_Image;//「準備完了」を意味するイメージ。
 
@@ -74,8 +76,10 @@ public class PlayerPreparationInputDate : MonoBehaviour
         playingData = GetComponent<PlayingData>();
         ppid_AS = GetComponent<AudioSource>();
         PlayerInput pi = GetComponent<PlayerInput>();//プレイヤーインプットを取得。
+
         pi.currentActionMap = pi.actions.actionMaps[1];//取得したPlayerInputのアクションマップを1番目(CharaSetting)に変更。
-        // tree_CharaCustomInt_VC_Int = playingData.playerNumber;//プレイヤーナンバーをカラーCustomのIntに合わせる。
+        tree_CharaCustomInt_VC_Int = playingData.playerNumber;//プレイヤーナンバーをカラーCustomのIntに合わせる。
+
         inputValueRefresh();
 
         WindowbackUpdate();
@@ -121,7 +125,7 @@ public class PlayerPreparationInputDate : MonoBehaviour
         readySW = false;
         Ready_ImageGroup.SetActive(false);
         treeParagraphInt = 0;
-        tree_CharaCustomInt_VC_Int = playingData.playerNumber;
+
         TreeVisRefresh();//表示内容の更新を行う。
     }
 
@@ -375,6 +379,7 @@ public class PlayerPreparationInputDate : MonoBehaviour
         if(colorPanel_Image.color != colorDate[tree_CharaCustomInt_VC_Int])
         {
             colorPanel_Image.color = colorDate[tree_CharaCustomInt_VC_Int];
+            colorPanel_Text.text = string.Format("{0}", tree_CharaCustomInt_VC_Int + 1);
         }
     }
 

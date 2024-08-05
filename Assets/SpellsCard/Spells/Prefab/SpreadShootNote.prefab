@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5851130235867383924}
+  - component: {fileID: 2642837285617741868}
   - component: {fileID: 2363353212109478172}
   - component: {fileID: 5452282801408954952}
   - component: {fileID: 300729678593563320}
-  - component: {fileID: 2642837285617741868}
   m_Layer: 0
   m_Name: SpreadShootNote
   m_TagString: Untagged
@@ -36,6 +36,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2642837285617741868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856100058432895332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9329ff26536c9c4aa23bc36f95bd0c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerObj: {fileID: 0}
+  modelObject: {fileID: 8025607581615269709}
+  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
+    type: 3}
+  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
+    type: 3}
+  damage: 0
+  shotSE: {fileID: 8300000, guid: 42df37fe98cc0c640a5d6ce982bc200a, type: 3}
+  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
 --- !u!65 &2363353212109478172
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -180,27 +201,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2642837285617741868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856100058432895332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9329ff26536c9c4aa23bc36f95bd0c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObj: {fileID: 0}
-  modelObject: {fileID: 8025607581615269709}
-  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
-    type: 3}
-  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
-    type: 3}
-  damage: 0
-  shotSE: {fileID: 8300000, guid: 42df37fe98cc0c640a5d6ce982bc200a, type: 3}
-  hitSE: {fileID: 8300000, guid: 5efdd67bf25f4784e92a0e3800874288, type: 3}
 --- !u!1 &8025607581615269709
 GameObject:
   m_ObjectHideFlags: 0

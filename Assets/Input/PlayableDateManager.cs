@@ -3,77 +3,99 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
 public class PlayableDateManager : MonoBehaviour
 {
     //このスクリプトはプレイヤーの操作キャラとそのキャラのUIを同時に格納し、管理する為のスクリプトになります。
     //またどのシーンにもこのスクリプトを保持する必要があります。
 
-    PlayerInputManager playerInputManager;/* ボタンを押すとゲームへの参加を行う。
-    インゲーム側では無効化する事が推奨。(再接続的に上手くいかない場合がある為。
-    無力化中に操作キャラが一度でも無力化すると権利をはく奪される為注意。)　*/
-    int playerGrantNumberCount;//プレイヤーに付与するナンバーを格納する。これは処理の中で使用される。
-    public int maxEntryJoinPlayerInt;//現在、最大何人まで入れるか。(これにより参加可能人数を制限する。またこれは自然数で表す。)
+    PlayerInputManager playerInputManager;
+    WindowManager windowManager;//CustomWindowのスナップを行ったり制御を行う。
+    SceneTransitionManager scene_TM;//シーン遷移に使用される専用のスクリプト。
+
+
     public int joinPlayerInt;//ゲームに参加しているプレイヤー人数。
+    public int maxEntryJoinPlayerInt;//現在、最大何人まで入れるか。(これにより参加可能人数を制限する。またこれは自然数で表す。)
+
 
     string unPlayableSearchTag = "UnknownPlayer";//入室した未加入プレイヤーを探す際に使用するタグ。
     string joinPlayableTag = "JoinPlayer";//加入したプレイヤーに使用するタグ。
 
-    public GameObject playersPrefab_Group;//生成したプレイアブルプレハブをまとめるオブジェクト
+    [Space]
 
-    //各プレイアブルキャラのスクリプト取得。
-    public List<GameObject> playableChara_OBJ;//操作キャラ本体。
+    public GameObject playersPrefab_Group;//生成したプレイアブルプレハブをまとめるグループオブジェクト
 
-    public GameObject playable_CanvasOBJ;
+    [HideInInspector] public List<GameObject> playableChara_OBJ;//操作キャラ本体。操作キャラなる プレイアブルオブジェクト そのものを指す。
 
-    public List<GameObject> playableChara_UI_PCW;//UI_PlayerCustomWindow
+    ////--------------------------------------------------
 
-    public List<GameObject> playableChara_UI_GSW;//UI_GeneralSelectWindow
+    //// 各オブジェクト群 ///---
+    #region
+    [HideInInspector] public GameObject playable_CanvasOBJ;// 各プレイヤーが所有する キャンバスオブジェクト が格納されています。
 
-    public List<GameObject> playableChara_UI_Pallet;//UI_Pallet。
+    [HideInInspector] public List<GameObject> playableChara_UI_PCW;// 各プレイヤーが所有する UI系の PlayerCustomWindow が格納されています。
 
-    public List<Image> playableChara_UI_PalletFrame_Image;//UI_Palletのフレーム。
+    [HideInInspector] public List<GameObject> playableChara_UI_GSW;// 各プレイヤーが所有する UI系の GeneralSelectWindow が格納されています。
 
-    public List<Image> playableCharaUI_DestroyCover;//UI_Destroyのカバーフレーム。
+    [HideInInspector] public List<GameObject> playableChara_UI_Pallet;// 各プレイヤーが所有する パレットUI が格納されています。
 
-    public List<PlayingData> playeable_PD;//PlayingData。
+    [HideInInspector] public List<Image> playableChara_UI_PalletFrame_Image;// パレットUI のフレームが格納されています。
 
-    public List<StatusManager> playableChara_SM;//ステータスマネージャー。
+    [HideInInspector] public List<Image> playableCharaUI_DestroyCover;// パレットUI に紐図けられている 撃破カバー が格納されています。
+    #endregion
 
-    public List<PlayerMoving> playableChara_PM;//プレイヤーマネージャー。
 
-    public List<HandCardManager> playableChara_HCM;//ハンドカードマネージャー。
+    //// 各プレイヤー に 付与されたスクリプト群 ///---
+    #region
+    [HideInInspector] public List<PlayingData> playeable_PD;// 各プレイヤーに付与されているスクリプト体 PlayingData が格納されています。
 
-    public List<PlayerUIManager> playableChara_UI_Manager;//プレイヤーUIマネージャー。
+    [HideInInspector] public List<StatusManager> playableChara_SM;// 各プレイヤーに付与されているスクリプト体 StatusManager が格納されています。
 
-    public List<PlayerPreparationInputDate> playableChara_PID;//プレイヤーの設定画面の入力値保管。
+    [HideInInspector] public List<PlayerMoving> playableChara_PM;// 各プレイヤーに付与されているスクリプト体 PlayerMoving が格納されています。
 
-    public List<PlayerGSWInput> PlayeableChara_GSW;//汎用選択枠の操作用スクリプト。
+    [HideInInspector] public List<HandCardManager> playableChara_HCM;// 各プレイヤーに付与されているスクリプト体 HandCardManager が格納されています。
 
-    public List<PlayerAdopt_Card> playeableChara_Adopt_Card;//プレイヤーのカードを受け渡すためのスクリプト。
+    [HideInInspector] public List<PlayerUIManager> playableChara_UI_Manager;// 各プレイヤーに付与されているスクリプト体 PlayerUIManager が格納されています。
+
+    [HideInInspector] public List<PlayerPreparationInputDate> playableChara_PID;// 各プレイヤーに付与されているスクリプト体 PlayerPreparationInputDate が格納されています。
+
+    [HideInInspector] public List<PlayerGSWInput> PlayeableChara_GSW;// 各プレイヤーに付与されているスクリプト体 PlayerGeneralSelectWindow が格納されています。
+
+    [HideInInspector] public List<PlayerAdopt_Card> playeableChara_Adopt_Card;//  各プレイヤーに付与されているスクリプト体 PlayerGeneralSelectWindow が格納されています。
+    #endregion
+
 
     //各要素の処理を行うScriptをアタッチする必要がある。
 
-    WindowManager windowManager;//CustomWindowのスナップを行ったり制御を行う。
-
+    [Header("カラーリング・マテリアル")]
+    #region
+    [Tooltip("プレイヤーが使用可能なプリセットのカラーリング値。")]
     public List<Color32> presetPlayerColor;//プリセットのプレイヤーのカラーリング群。インスペクターから設定可能。
 
+    [Tooltip("プレイヤーに付与される色判別用のマテリアル。")]
     public List<Material> playerCursorMaterials;//プレイヤーに付与するマテリアル。インスペクターからアタッチ必須。
 
+    [Tooltip("プレイヤーの使用する ロックオンライン のマテリアル。")]
     public List<Material> playerLockOnLineMaterial;//プレイヤーの使用するロックオンラインのマテリアル。インスペクターからアタッチ必須。
 
+    [Tooltip("プレイヤーがカメラから見えない 遮蔽物 に隠れた際に 描画されるマテリアル。")]
     public List<Material> playerOverRayMaterial;//プレイヤーの透過時のマテリアル。インスペクターからアタッチ必須。
+    #endregion
 
-    int depositJoinPlayer;//一時的に参加中のプレイヤー人数を取得する。これはインゲーム中に飛び入り参加を無効にするために使用される。
-    SceneTransitionManager scene_TM;
+    ////--------------------------------------------------
 
-    //
-    public int stageNumberInt = 1;//ロードさせるステージ番号。1でGrid、2でConcrete。など.....という感じになっている。
+    [HideInInspector] public int stageNumberInt;//ロードさせるシーン番号。
+
+    ////--------------------------------------------------
+
     void Start()
     {
         maxEntryJoinPlayerInt = 4;
+        stageNumberInt = 1;
         playerInputManager = GetComponent<PlayerInputManager>();
         windowManager = GetComponent<WindowManager>();
         scene_TM = GetComponent<SceneTransitionManager>();
+        stageNumberInt = 1;
     }
 
     public void OnPlayerJoined(PlayerInput playerInput)//対応したボタンを押して入室した場合。
@@ -132,24 +154,19 @@ public class PlayableDateManager : MonoBehaviour
         {
             joinPlayerInt--;
 
-            Destroy(joinPlayables);//サーチアンドデストロイッッ。サーチアンドデストロイッ!!
+            Destroy(joinPlayables);// 入った相手を破棄する。
 
             Debug.Log("入室上限を超えました。");
         }
     }
 
-    // プレイヤー退室時に受け取る通知(本来使用しない機能の為、内容不明確。)
+    // プレイヤー退室時に受け取る通知
     public void OnPlayerLeft(PlayerInput playerInput)//削除(無効化)された場合。
     {
         print($"プレイヤー#{playerInput.user.index}が退室！");
     }
 
-    void PlayableDateInit()//プレイアブルデータの初期定義。
-    {
-
-    }
-
-    public void ReadySW_detection()//全員のReadySWがtreuになっているかを調べる。
+    public void ReadySW_detection()//全員のReadySWがtreuになっているかを調べ、条件を満たしていたら遷移Managerのロード関数を呼び出す。
     {
         if(joinPlayerInt >= 2)
         {
@@ -173,7 +190,7 @@ public class PlayableDateManager : MonoBehaviour
                     playableChara_PID[i].PID_InputSafety = true;//PIDすべてのセルフティをオンにする。
                 }
 
-                scene_TM.loadStageNamber = stageNumberInt;//ステージGridに遷移させる。
+                scene_TM.loadStageNamber = stageNumberInt;//遷移先のナンバーを渡す。
                 scene_TM.StartLoad();//シーン遷移を開始する。
             }
         }

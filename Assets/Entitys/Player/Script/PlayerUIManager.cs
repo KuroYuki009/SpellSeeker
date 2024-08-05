@@ -12,15 +12,18 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject manaUI_OBJ;
     Animator manaAnima;
     int depositManapoint;//一時的に数値を保管し、判定に使用。
+
     ////プレイアブル下部に描写するUIに関する。//------
     /*public GameObject playerUnderUI;//プレイヤーオブジェクト下部に表示するUI。
     Camera visCamera;//カメラの指定。
     Transform p_tf;//プレイヤーの座標。
     RectTransform uu_tf;//下部UIのRect座標。
     Vector3 offsetPos = new Vector3(0,-1.5f,0);*/
+
     ////プレイヤーのステータスUIに関する。//-----
     public CanvasGroup playerUIGroup;//ステータスUI等をまとてある親に付いているコンポーネント。
     float guiAlpha;
+
     ////ステータスUI各種に関する。//------
     float healthDeposit;//体力を一時格納する。UI等の更新の判別に使用する。
     public Image healthFillSprite;
@@ -30,9 +33,9 @@ public class PlayerUIManager : MonoBehaviour
     public Text manaText;
 
     //脆弱状態
-    float vulnerableDeposit;
-
     public Image healthCrackCoverImage;
+    //float vulnerableDeposit;
+    
 
     //セカンドアクション「シフトダッシュ」はPlayerMovingスクリプトに存在します。
     public Image shiftDashFillSprite;

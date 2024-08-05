@@ -28,7 +28,7 @@ public class InGameManager : MonoBehaviour
     //ゲームモード追加モジュール。
     public bool shieldBuild_ModeSW = true;//シールド戦。二極値。
 
-    public PlayerStatusDate mode_conflict_offsetStatusDate;//conflict時のオフセット(初期)ステータス。
+    public StatusDate mode_conflict_offsetStatusDate;//conflict時のオフセット(初期)ステータス。
 
     public List<GameObject> playableObject;//プレイヤーのプレイアブルオブジェクトを格納する。
     public List<StatusManager> playableStatusManager;//プレイヤーのステータスマネージャーを格納する。
@@ -92,8 +92,6 @@ public class InGameManager : MonoBehaviour
         {
             switch (gameModeRoute)
             {
-
-
                 //コンフリクト系モードの処理-------------
                 case "Conflict_Classic_inBattleProcess":
                     Conflict_Classic_inBattleProcess();
@@ -104,8 +102,6 @@ public class InGameManager : MonoBehaviour
                 case "WhatNextGame":
                     WhatNextGame();
                     break;
-
-                
             }
         }
         else
@@ -152,8 +148,8 @@ public class InGameManager : MonoBehaviour
 
         if (currentSceneDate.sceneGameMode == "Menu")
         {
-            //Resources.UnloadUnusedAssets();//メモリを解放する。
-            //Debug.Log("メモリ解放");
+            // 入室上限を元に戻す。
+            playableDM.maxEntryJoinPlayerInt = 4;
 
             PalletUI_Group.SetActive(false);
             GSW_Group.SetActive(false);
@@ -162,6 +158,10 @@ public class InGameManager : MonoBehaviour
         }
         else//それ以外の場合、
         {
+            // 一度入室制限を掛ける。
+            playableDM.maxEntryJoinPlayerInt = playableDM.joinPlayerInt;
+
+            // 各種UIを一度非表示にする。
             PCW_Group.SetActive(false);
             GSW_Group.SetActive(false);
             GSW_BackCover_Image.enabled = false;
@@ -180,23 +180,26 @@ public class InGameManager : MonoBehaviour
 
         if (currentSceneDate.sceneGameMode == "Conflict_Classic")//ゲームモードが対戦モードである場合。
         {
-            PalletGroup_AlphaHide();//プレイヤーパレット群のアルファ値を一度0にする。
+            PalletGroup_AlphaHide();//プレイヤーパレット群のアルファ値を一度 ゼロにする。
 
             if (shieldBuild_ModeSW == true)//シールド戦がオンになっている場合、
             {
                 //ゲームを開始する前にシールドデッキを組ませる。
-                GSW_Group.SetActive(true);
-
                 ShieldBuild_SetUp();
+
                 PlayerSpawnPoint_Snap();
             }
             else//シールド戦がオンになっていない場合、
             {
                 //そのままバトルフェイズに移行させる。
+                for (int i = 0; i < playableDM.playableChara_OBJ.Count; i++)
+                {
+                    playableDM.playeable_PD[i].onHandDeckDate.Clear();
+                }
 
                 Conflict_Classic_SetUp();//セットアップの処理を行う。
                 PlayerSpawnPoint_Snap();
-                BeforeStartingAnima();//Animationを再生させ、終点のイベントにスタートさせる。
+                BeforeStartingAnima();// Animationを再生させ、終点のイベントにスタートさせる。
             }
         }
     }
@@ -555,6 +558,8 @@ public class InGameManager : MonoBehaviour
     //追加モジュール_ShieldBuild ------------------------
     void ShieldBuild_SetUp()//
     {
+        GSW_Group.SetActive(true);
+
         GSW_BackCover_Image.enabled = true;//背景カバーをオンにする。
 
         for (int c = 0; c < playableDM.playableChara_OBJ.Count; c++)
@@ -631,6 +636,8 @@ public class InGameManager : MonoBehaviour
         Time.fixedDeltaTime = 0.02f;
     }
 
+    ////プレイヤーパレット群の表示・非表示の演出用の関数たち。
+    //
     void PalletGroup_AlphaHide()//プレイヤーパレットのグループ群をアルファ値かを0にする。
     {
         PalletGroup_CanvasGroup.alpha = 0;

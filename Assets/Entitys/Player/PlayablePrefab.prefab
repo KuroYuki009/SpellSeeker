@@ -393,6 +393,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e4dad158-71d7-4307-a8bd-b51ac89df136
     m_ActionName: DynamicSelect/CancelButton[/Keyboard/backspace]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5441211727582410535}
+        m_TargetAssemblyTypeName: PlayerMoving, Assembly-CSharp
+        m_MethodName: ShiftDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7eb21d69-e6a2-421b-9b24-890f27683d7a
+    m_ActionName: Player/DoubleTapMove
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -410,9 +426,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e808bd7db4b44ca40a4deadb700679b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playableObject: {fileID: 0}
   playerNumber: 0
   teamNumber: 0
-  playableObject: {fileID: 0}
   playerVisualColor:
     serializedVersion: 2
     rgba: 0
@@ -431,8 +447,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SM_ProcessSafety: 1
-  maxHitPoint: 1000
-  hitPoint: 1000
+  maxHitPoint: 500
+  hitPoint: 500
   hitPoint_Empty: 0
   this_Eliminated: 0
   maxArmorPoint: 0
@@ -469,7 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusManager: {fileID: 1072367034690462021}
   visCamera: {fileID: 0}
-  forwardVc3: {x: 0, y: 0, z: 0}
+  move_forwardPointVc3: {x: 0, y: 0, z: 0}
   lockOnTargetObj: {fileID: 0}
   sdAtMaxCoolTime: 0
   sdAtCoolTime: 0
@@ -488,15 +504,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb27dbbfbf12d144864da3bf5c9f7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HCM_ProcessSafety: 1
   deckInst: {fileID: 11400000, guid: 182f74b973d7a1444b7b7b382529f47e, type: 2}
+  deckCards: []
+  depositDeck: []
+  handCards: []
+  instPos: {fileID: 256202823811863162}
   handAnimator: {fileID: 2335726068222347815}
   cooltime_Text: {fileID: 3933130254925443740}
   cooltime_FillImage: {fileID: 2180430186040287700}
   castPanelAnimator: {fileID: 5607970572477260650}
-  deckCards: []
-  depositDeck: []
-  handCards: []
   castCardNameText: {fileID: 3050731769089802271}
   castCardDamageText: {fileID: 6765627908117442820}
   pickWindow:
@@ -508,25 +524,13 @@ MonoBehaviour:
   noneCardData: {fileID: 11400000, guid: 5beb695ca9e5f6a4ab4e5b2c1116c37c, type: 2}
   CastCardCover: {fileID: 6633939955169900289}
   manaCostWindow_0_Animator: {fileID: 3257798169757914169}
-  manaCostWindow:
+  manaCostText:
   - {fileID: 6345202430484535970}
   - {fileID: 615872359934368562}
   - {fileID: 1326167088046742794}
   - {fileID: 4860985081922684903}
   - {fileID: 5493103299739363055}
   deckCountText: {fileID: 7245340306110928138}
-  instPos: {fileID: 256202823811863162}
-  switchRoot: 
-  standbySW: 0
-  deckCount: 0
-  drawCT: 0
-  drawCT_max: 0
-  deckReloadCT: 0
-  deckReloadCT_max: 0
-  deckReloadCT_basisTime: 0
-  deckReloadCT_sumTime: 0
-  lockOnTarget: {fileID: 0}
-  lineRenderer: {fileID: 2053080308596742256}
   ac_HandCase_Reload_Start: {fileID: 8300000, guid: 2d0cadd2dabd45843a66b50d8b8ce448,
     type: 3}
   ac_HandCase_Reload_Charge: {fileID: 8300000, guid: e00dd9527a2fe924191895e049e7cfa0,
@@ -536,6 +540,17 @@ MonoBehaviour:
   cardFoldSE: {fileID: 8300000, guid: d2dfd63dcf6ee1144b55d932293fb79e, type: 3}
   lockOn_InSE: {fileID: 8300000, guid: 6a0e589bc08c9844aa800f62ae55b822, type: 3}
   lockOn_OutSE: {fileID: 8300000, guid: c8e7d15d3f3dd8340923a8165ce83643, type: 3}
+  lineRenderer: {fileID: 2053080308596742256}
+  switchRoot: 
+  HCM_ProcessSafety: 1
+  deckCount: 0
+  drawCT: 0
+  drawCT_max: 0
+  deckReloadCT: 0
+  deckReloadCT_max: 0
+  deckReloadCT_basisTime: 0
+  deckReloadCT_sumTime: 0
+  lockOnTarget: {fileID: 0}
 --- !u!82 &1293756777274564270
 AudioSource:
   m_ObjectHideFlags: 0
@@ -548,7 +563,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -788,6 +803,7 @@ MonoBehaviour:
   - {fileID: 1525214670195978195}
   - {fileID: 1474044991771481739}
   colorPanel_Image: {fileID: 8808538001331609281}
+  colorPanel_Text: {fileID: 681480765146862113}
   colorDate:
   - serializedVersion: 2
     rgba: 4288032255
@@ -5215,11 +5231,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playableObject: {fileID: 91638630817842008}
   canvasOBJ: {fileID: 9090482123832435191}
+  playable_Skin_Head: {fileID: 6816831614522081479}
+  playable_Skin_Body: {fileID: 4538509345390728268}
+  playable_CursorRing: {fileID: 1835726151543257262}
+  playable_DireArrow: {fileID: 7706852963807711493}
   ui_CustomWindow: {fileID: 503133224437451381}
   ui_GeneralSelectWindow: {fileID: 2213896477644615862}
   ui_Pallet: {fileID: 8815429696304188918}
   ui_Pallet_Frame: {fileID: 3204104854588204762}
   ui_DestroyCover: {fileID: 4661357889518129971}
+  PalletFrame_NumberTag_Text: {fileID: 4760073347759328920}
+  PCW_NumberTag_Image:
+  - {fileID: 524726791802535154}
+  - {fileID: 206607985190940378}
+  - {fileID: 1202461730169737899}
+  - {fileID: 3465726740181325523}
   playable_PD: {fileID: 5172363451837520283}
   playable_SM: {fileID: 1072367034690462021}
   playable_PM: {fileID: 5441211727582410535}
@@ -5228,16 +5254,6 @@ MonoBehaviour:
   playable_PID: {fileID: 2111245743348696442}
   playable_GSW: {fileID: 6162548114657915235}
   playeable_Adopt_Card: {fileID: 454271616899883876}
-  PCW_NumberTag_Image:
-  - {fileID: 524726791802535154}
-  - {fileID: 206607985190940378}
-  - {fileID: 1202461730169737899}
-  - {fileID: 3465726740181325523}
-  PalletFrame_NumberTag_Text: {fileID: 4760073347759328920}
-  playable_Skin_Head: {fileID: 6816831614522081479}
-  playable_Skin_Body: {fileID: 4538509345390728268}
-  playable_CursorRing: {fileID: 1835726151543257262}
-  playable_DireArrow: {fileID: 7706852963807711493}
 --- !u!1 &2873398106893169966
 GameObject:
   m_ObjectHideFlags: 0
@@ -11778,7 +11794,7 @@ GameObject:
   - component: {fileID: 3191167629712124879}
   - component: {fileID: 4874364212984234272}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11845,7 +11861,7 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

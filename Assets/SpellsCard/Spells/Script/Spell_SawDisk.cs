@@ -4,36 +4,56 @@ using UnityEngine;
 
 public class Spell_SawDisk : MonoBehaviour
 {
-    public SpellData spellDate;
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
+
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("発射時に 描写されるエフェクトです。")]
+    public GameObject shotEffect;//射撃時のエフェクト
+
+    [Tooltip("何かしらに ヒットした際に 描写されるエフェクトです。")]
+    public GameObject hitEffect;//対象へのヒットエフェクト
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("使用時に 再生されるサウンドです。")]
+    public AudioClip shotSE;//生成時に発生する音。
+
+    [Tooltip("標的に ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;//当たった際の音。
+
+    [Tooltip("何かしらに ヒットした際に 再生されるサウンドです。")]
+    public AudioClip colliSE;//何かしらにぶつかった音。
+    #endregion
+
+    ////--------------------------------------------------
 
     SpellPrefabManager spm;
-    GameObject ownerObj;//所有者オブジェクト
-    string ownerTag;//所有者のタグ
 
-    Collider cd;
     Rigidbody rb;
-    AudioSource ownerAS;
-
-    float aliveTime;//生存時間。
-
-    int health;//このオブジェクトの体力値。
-    int damage;//このオブジェクトのダメージ値。
-    float speed;//このオブジェクトの移動速度。
-
-    //public GameObject shotEffect;//射撃時のエフェクト
-    public GameObject hitEffect;//対象へのヒットエフェクト
-
-    //効果音
     AudioSource audioSource;
-    public AudioClip shotSE;//生成時に発生する音。
-    public AudioClip hitSE;//当たった際の音。
-    public AudioClip colliSE;//何かしらにぶつかった音。
+
+    GameObject ownerObj;// 所有者オブジェクト
+    string ownerTag;// 所有者のタグ
+    AudioSource ownerAS;// 所有者オブジェクトのAudioSource
+
+    int health;// このオブジェクトの体力値。
+    int damage;// このオブジェクトのダメージ値。
+    float speed;//このオブジェクトの移動スピード値。
+
+
+    float aliveTime;// 生存時間。
+
+    ////--------------------------------------------------
 
     void Start()
     {
         spm = GetComponent<SpellPrefabManager>();
         rb = GetComponent<Rigidbody>();
-        cd = GetComponent<Collider>();
         audioSource = GetComponent<AudioSource>();
 
         health = 200;

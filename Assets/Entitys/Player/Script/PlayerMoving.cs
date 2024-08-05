@@ -11,8 +11,8 @@ public class PlayerMoving : MonoBehaviour
 
     public Camera visCamera;
     Vector3 cameraForward;
-    public Vector3 forwardVc3;
-
+    public Vector3 move_forwardPointVc3;
+    Vector3 look_forwardPointVc3;
 
     InputAction move, look;
 
@@ -24,6 +24,9 @@ public class PlayerMoving : MonoBehaviour
     float maxSpeed;//最大移動速度
     float moveSpeed;//移動速度
     float moveMag = 1.0f;//移動速度倍率。
+
+    // ロックオン時の対象への追従値。
+    float lockonLookFollowValue;
 
     //状態値。StatusManagerから取得する必要がある。
     bool noMoveSts;//行動不可状態か。
@@ -52,8 +55,10 @@ public class PlayerMoving : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         sdAtDeadZone = 0.30f;
+        lockonLookFollowValue = 0.32f;
+
         //inputSystemを接続する。
-        PlayerInput playerInput = GetComponent<PlayerInput>();//本体以外からの入力で動く為一時コメントアウト。
+        PlayerInput playerInput = GetComponent<PlayerInput>();
         move = playerInput.actions["Move"];
         look = playerInput.actions["Look"];
 
@@ -69,11 +74,11 @@ public class PlayerMoving : MonoBehaviour
 
     void Update()
     {
-        Define();//各変数の接続を行う。
+        Define();// 各変数の接続を行う。
 
-        MovingProcessing();//操作時の処理を行う。
+        MovingProcessing();// 操作時の処理を行う。
 
-        SdAcProcessing();//セカンダリアクションの処理を行う。
+        SdAcProcessing();// セカンダリアクションの処理を行う。
     }
 
     public void CameraSearch()
@@ -97,45 +102,45 @@ public class PlayerMoving : MonoBehaviour
                     if (RB.velocity.magnitude < maxSpeed)//スピードに制限をかける。
                     {
                         // 移動方向にスピード(moveSpeedとscroll値)を掛ける。
-                        RB.velocity = forwardVc3 * (moveSpeed * moveMag) + new Vector3(0, 0, 0);
+                        RB.velocity = move_forwardPointVc3 * (moveSpeed * moveMag) + new Vector3(0, 0, 0);
 
                     }
                     else if (RB.velocity.magnitude > maxSpeed)
                     {
-                        RB.velocity = forwardVc3 * (moveSpeed * moveMag) + new Vector3(0, 0, 0);
+                        RB.velocity = move_forwardPointVc3 * (moveSpeed * moveMag) + new Vector3(0, 0, 0);
                     }
 
                     //Debug.Log(RB.velocity.magnwitude);
 
-                    // カメラの方向から、X-Z平面の単位ベクトルを取得
+                    // カメラの方向から、X-Z平面の単位ベクトルを取得。正面を割り出します。
                     cameraForward = Vector3.Scale(visCamera.transform.forward, new Vector3(1, 0, 1)).normalized;
 
                     // 方向キーの入力値とカメラの向きから、移動方向を決定
-                    forwardVc3 = cameraForward * moveInput.y + visCamera.transform.right * moveInput.x;
+                    move_forwardPointVc3 = cameraForward * moveInput.y + visCamera.transform.right * moveInput.x;
                 }
             }
 
             ////キャラ向き処理。
-            // キャラクターの向きを進行方向に
+            //
             if (lockOnTargetObj == null)
             {
                 if (lookInput != Vector2.zero)
                 {
-                    Vector3 cv = new Vector3(lookInput.x, 0, lookInput.y);
-                    //gameObject.transform.rotation = Quaternion.LookRotation(cv);
-                    Quaternion qt = Quaternion.LookRotation(cv);
+                    look_forwardPointVc3 = cameraForward * lookInput.y + visCamera.transform.right * lookInput.x;
+                    
+                    Quaternion qt = Quaternion.LookRotation(look_forwardPointVc3);
                     transform.rotation = Quaternion.Lerp(transform.rotation, qt, 0.5f);
                 }
-                else if (forwardVc3 != Vector3.zero)
+                else if (move_forwardPointVc3 != Vector3.zero)
                 {
-                    Quaternion qt = Quaternion.LookRotation(forwardVc3);
+                    Quaternion qt = Quaternion.LookRotation(move_forwardPointVc3);
                     transform.rotation = Quaternion.Lerp(transform.rotation, qt, 0.5f);
                 }
             }
-            else if (lockOnTargetObj != null)
+            else if (lockOnTargetObj != null)// ロックオン 捕捉対象がいる場合
             {
                 Quaternion qton = Quaternion.LookRotation(lockOnTargetObj.transform.position - transform.position);
-                transform.rotation = Quaternion.Lerp(transform.rotation, qton, 0.2f);//ロックオン時の相手への向き固定値。
+                transform.rotation = Quaternion.Lerp(transform.rotation, qton, lockonLookFollowValue);
             }
 
             ////追加要素。
@@ -195,14 +200,14 @@ public class PlayerMoving : MonoBehaviour
         {
             if(statusManager.shockSt == false)
             {
-                if ((forwardVc3.x >= sdAtDeadZone || forwardVc3.x <= -sdAtDeadZone) || (forwardVc3.z >= sdAtDeadZone || forwardVc3.z <= -sdAtDeadZone))// 一定の入力が行われていない場合、発動しない。
+                if ((move_forwardPointVc3.x >= sdAtDeadZone || move_forwardPointVc3.x <= -sdAtDeadZone) || (move_forwardPointVc3.z >= sdAtDeadZone || move_forwardPointVc3.z <= -sdAtDeadZone))// 一定の入力が行われていない場合、発動しない。
                 {
                     if (sdActionSW == true && sdAtCoolTime <= 0)
                     {
                         if (statusManager.manaPoint >= 1)// コスト数があっているか確認。
                         {
                             statusManager.Mana_Inflict_Expense(1);// マナを1消費する。
-                            depositForwardVc3 = forwardVc3;// 入力値を一時格納。
+                            depositForwardVc3 = move_forwardPointVc3;// 入力値を一時格納。
                             sdActionTime = 0.08f;
 
                             audioSource.PlayOneShot(shiftDashSE);// 効果音を鳴らす。

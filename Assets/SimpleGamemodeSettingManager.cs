@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
 public class SimpleGamemodeSettingManager : MonoBehaviour
 {
     ////このスクリプトはいつでも名前、所属を変更出来るようにする必要がある為、必ず本スクリプトの参照等の行為を行う際は記述すること。
@@ -10,14 +10,13 @@ public class SimpleGamemodeSettingManager : MonoBehaviour
 
     InGameManager inGameManager;
     PlayableDateManager pdManager;
+    SceneTransitionManager stm;
+
     //アタッチ類
     public GameObject imageText_AddSubSc_StarterDecksObj;//イメージテキスト群「AddSubSc_StarterDeck」
     public GameObject imageText_AddSubSc_ShieldBuildsObj;//イメージテキスト群「AddSubSc_ShieldBuild」
 
-    public GameObject imageText_Stage_GridObj;//
-    public GameObject imageText_Stage_ConcreteObj;//
-    public GameObject imageText_Stage_HighPlaceObj;//
-
+    public Text mapNameDisplayText;
     //
     int stageNumberInt_min;//最小値。
     int stageNumberInt_max;//最大値。
@@ -26,9 +25,10 @@ public class SimpleGamemodeSettingManager : MonoBehaviour
     {
         inGameManager = GetComponent<InGameManager>();
         pdManager = GetComponent<PlayableDateManager>();
+        stm = GetComponent<SceneTransitionManager>();
 
         stageNumberInt_min = 1;
-        stageNumberInt_max = 3;
+        stageNumberInt_max = 4;
         RefreshVisStageName();
         RefreshVisAddSubScMode();
     }
@@ -100,25 +100,8 @@ public class SimpleGamemodeSettingManager : MonoBehaviour
 
     public void RefreshVisStageName()//ステージの名前表記更新。
     {
-        Debug.Log(pdManager.stageNumberInt);
-
-        if(pdManager.stageNumberInt == 1)//Gridステージ。
-        {
-            imageText_Stage_GridObj.SetActive(true);
-            imageText_Stage_ConcreteObj.SetActive(false);//
-            imageText_Stage_HighPlaceObj.SetActive(false);
-        }
-        else if(pdManager.stageNumberInt == 2)//Concreteステージ。
-        {
-            imageText_Stage_ConcreteObj.SetActive(true);//
-            imageText_Stage_GridObj.SetActive(false);
-            imageText_Stage_HighPlaceObj.SetActive(false);
-        }
-        else if(pdManager.stageNumberInt == 3)//HighPlaceステージ。
-        {
-            imageText_Stage_HighPlaceObj.SetActive(true);
-            imageText_Stage_GridObj.SetActive(false);
-            imageText_Stage_ConcreteObj.SetActive(false);//
-        }
+        int i = pdManager.stageNumberInt;
+        string stageName = stm.stageProfileDate[i].sceneVisName;
+        mapNameDisplayText.text = stageName;
     }
 }

@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1072828302473577706}
+  - component: {fileID: 5841727538328816237}
+  - component: {fileID: 4240661119257532470}
   - component: {fileID: 5912343043744438612}
   - component: {fileID: 1874227753656958814}
   - component: {fileID: -4431755187676732066}
-  - component: {fileID: 5841727538328816237}
-  - component: {fileID: 4240661119257532470}
   m_Layer: 0
   m_Name: Spell_Knife
   m_TagString: Untagged
@@ -37,6 +37,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5841727538328816237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820710587670053371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerObject: {fileID: 0}
+--- !u!114 &4240661119257532470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820710587670053371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ad885e43958c74091f2e26868eeb9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellDate: {fileID: 11400000, guid: f720f419b3b8fd7429e55cb979f54c60, type: 2}
+  shotEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
+    type: 3}
+  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
+    type: 3}
+  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
+    type: 3}
+  shotSE: {fileID: 8300000, guid: a4c366be50eaa874a817f1da4326a9fe, type: 3}
+  hitSE: {fileID: 8300000, guid: fc67e84b22a2e844c97f9fbe01ff4d7c, type: 3}
 --- !u!65 &5912343043744438612
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,41 +215,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5841727538328816237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820710587670053371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f89d67423c21d41806c53c12f5a7d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerObject: {fileID: 0}
---- !u!114 &4240661119257532470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820710587670053371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97ad885e43958c74091f2e26868eeb9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellDate: {fileID: 11400000, guid: f720f419b3b8fd7429e55cb979f54c60, type: 2}
-  shotEffect: {fileID: 8575972590327113164, guid: 47855c21dff0c5844ad5a2eb7eddbcdb,
-    type: 3}
-  targetHitEffect: {fileID: 1134729940570849436, guid: ea44577202a9cb741a918d2c2c30ccd7,
-    type: 3}
-  hitEffect: {fileID: 1134729940570849436, guid: 4736c1bf610324848b6cc75219500862,
-    type: 3}
-  speed: 15
-  shotSE: {fileID: 8300000, guid: a4c366be50eaa874a817f1da4326a9fe, type: 3}
-  hitSE: {fileID: 8300000, guid: fc67e84b22a2e844c97f9fbe01ff4d7c, type: 3}
 --- !u!1001 &1481361907427486489
 PrefabInstance:
   m_ObjectHideFlags: 0

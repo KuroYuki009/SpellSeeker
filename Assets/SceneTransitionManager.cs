@@ -15,8 +15,6 @@ public class SceneTransitionManager : MonoBehaviour
     LoadScreenEventProcess loadScreen_EP;
     Animator loadUI_Animator;
 
-    //判定用二極値
-    public bool testSW;
     // ロードの進捗状況を管理するための変数
     private AsyncOperation async;
 
@@ -28,18 +26,9 @@ public class SceneTransitionManager : MonoBehaviour
         gameModeManager = GetComponent<InGameManager>();
     }
 
-    private void Update()
-    {
-        if(testSW == true)
-        {
-            StartLoad();
-        }
-    }
-
     // ロードを開始するメソッド
     public void StartLoad()
     {
-        testSW = false;
         // ロード画面を表示する
         loadingUI_Obj.SetActive(true);
         loadUI_Animator.SetTrigger("CutIn_Trigger");//アニメーションをカットインステートに移動。
@@ -68,6 +57,9 @@ public class SceneTransitionManager : MonoBehaviour
             yield return null;
         }
         Debug.Log("ロード終了");
+
+        Resources.UnloadUnusedAssets();// メモリを解放する。
+
         EndLoad(); //ロード終了後の処理を行う。
     }
 
@@ -76,6 +68,7 @@ public class SceneTransitionManager : MonoBehaviour
         loadUI_Animator.SetTrigger("CutOut_Trigger");//アニメーションをカットアウトステートに移動。
         //ここで外部へ信号を送り、現シーン名から要素を発生させる。
         gameModeManager.currentSceneDate = stageProfileDate[loadStageNamber];//ゲームモードマネージャに現在のシーン名を流す。 
+
         gameModeManager.SceneEntryProcess();//インゲームマネージャーに信号を送る。
     }
 

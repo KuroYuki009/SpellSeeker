@@ -4,49 +4,78 @@ using UnityEngine;
 
 public class Spell_PushLater : MonoBehaviour
 {
-    public SpellData spellDate;//アタッチしたスペルデータ。
+    [Header("スペルデータ")]//---
+    public SpellData spellDate;// 各種データ参照に使用される。
+
+
+    [Header("モデル オブジェクト")]//---
+    [Tooltip("モデルの制御に使用されます。")]
+    public GameObject modelObject;//このスペルのモデル。
+
+
+    [Header("エフェクト")]//---
+    #region
+    [Tooltip("射撃時に 描写されるエフェクトです。")]
+    public ParticleSystem shotEffect;// 射撃時のエフェクト。
+
+    [Tooltip("マズルフラッシュの 描写エフェクト")]
+    public ParticleSystem muzzleFlashEffect;// マズルフラッシュエフェクト。
+
+    [Tooltip("標的に ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem targetHitEffect;// 対象へのヒットエフェクト。
+
+    [Tooltip("何かしらに ヒットした時に 描写されるエフェクトです。")]
+    public ParticleSystem hitEffect;// 対象以外のオブジェクトへのヒットエフェクト
+
+    [Tooltip("起爆時に 描写されるエフェクトです。")]
+    public ParticleSystem windEffect;// 起爆時のエフェクト
+
+    [Tooltip("力を加える方向を 描写するエフェクトです。")]
+    public ParticleSystem pushDirectionalEffect;// ヒット後に描写される指方向エフェクト。
+    #endregion
+
+
+    [Header("サウンド")]//---
+    #region
+    [Tooltip("射撃時に 再生されるサウンドです。")]
+    public AudioClip shotSE;//射撃時に発生する音。
+
+    [Tooltip("何かしらに ヒットした時に 再生されるサウンドです。")]
+    public AudioClip hitSE;//当たった際の音。
+
+    [Tooltip("起爆時に 再生されるサウンドです。")]
+    public AudioClip blastSE;//爆発時に鳴らす音。
+    #endregion
+
+    ////--------------------------------------------------
+
+    SpellPrefabManager spm;
 
     Rigidbody rb;
     AudioSource audioSource;
 
-    SpellPrefabManager spm;
-    GameObject ownerObj;//所有者。
-    string ownerTag;//所有者のタグ
-    AudioSource ownerAS;
-    public GameObject modelObject;//このスペルのモデル。
+    GameObject ownerObj;// 所有者。
+    string ownerTag;// 所有者のタグ
+    AudioSource ownerAS;// 所有者オブジェクトのAudioSource
 
-    ////エフェクト
-    public ParticleSystem shotEffect;//射撃時のエフェクト。
-    public ParticleSystem muzzleFlashEffect;//射撃時マズルフラッシュエフェクト。
-    public ParticleSystem targetHitEffect;//対象へのヒットエフェクト。
-    public ParticleSystem hitEffect;//他オブジェクトへのヒットエフェクト
-    public ParticleSystem windEffect;//起爆時のエフェクト
+    int damage;// このオブジェクトのダメージ値
+    float speed;// このオブジェクトの移動スピード値
 
-    public ParticleSystem pushDirectionalEffect;
-    //------------
-
-    int damage;//このスペルのダメージ格納用。
-
-    public float speed;//このスペルの速度格納用。
-    bool hitSW;//当たっているかどうか。
-    Vector3 hitPos;//当たった位置を格納。レイが当たった位置を格納し必要な際に呼び出す。
 
     string rootString;
 
     GameObject hitObj;
     StatusManager hitSM;
-    
+    AudioSource otherAS;
 
     float processTime;//生成されてからの経過時間
 
-    float stickProcessTime;//当たってからの経過時間を格納する為の変数。
-    float goalTime;
+    bool hitSW;// 当たっているかどうか。
+    float stickProcessTime;// 当たってからの経過時間を格納する為の変数。
+    float goalTime;// 終点となる時間。
 
-    //効果音
-    public AudioClip shotSE;//生成時に発生する音。
-    public AudioClip hitSE;//当たった際の音。
-    public AudioClip blastSE;//爆発時になる音。
-    AudioSource otherAS;
+    ////--------------------------------------------------
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -63,12 +92,12 @@ public class Spell_PushLater : MonoBehaviour
         ownerAS.PlayOneShot(shotSE);
 
         speed = 28.0f;
-        goalTime = 3.0f;
+        goalTime = 2.0f;//二秒後に起動させる。
 
         rootString = "ShellMode";//シェルモードに移行。
 
-        Instantiate(muzzleFlashEffect, transform.position, transform.rotation);
-        Instantiate(shotEffect, transform.position, Quaternion.identity);
+        Instantiate(muzzleFlashEffect, transform.position, transform.rotation);// マズルフラッシュのエフェクト生成。
+        Instantiate(shotEffect, transform.position, Quaternion.identity);// 波紋型のエフェクト生成。
     }
 
     void Update()
@@ -92,7 +121,7 @@ public class Spell_PushLater : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(hitSW == false)
+        if(hitSW == false)//当たるまで進み続ける。
         {
             rb.velocity = (transform.forward * speed);
         }
@@ -100,9 +129,11 @@ public class Spell_PushLater : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        string hitObjectTag = other.tag;
+
         if(hitSW == false)
         {
-            if (other.tag != ownerTag && other.tag != "Search")
+            if (hitObjectTag != ownerTag && hitObjectTag != "Search")
             {
                 hitObj = other.gameObject;
 
@@ -122,19 +153,31 @@ public class Spell_PushLater : MonoBehaviour
                     Instantiate(targetHitEffect, hitObj.transform.position, Quaternion.identity);
 
                     Instantiate(pushDirectionalEffect, gameObject.transform.position, transform.rotation,transform);
+
+                    HitToEnd();
+                }
+                else if (hitObjectTag == "Player_1" || hitObjectTag == "Player_2" || hitObjectTag == "Player_3" || hitObjectTag == "Player_4")// プレイヤー識別のタグだった場合
+                {
+                    //何も起こしません。
                 }
                 else//静的なオブジェクトにヒットした場合。
                 {
                     Instantiate(hitEffect, gameObject.transform.position, Quaternion.identity);
                     audioSource.PlayOneShot(hitSE);
+
+                    hitSW = true;
+
+                    Destroy(gameObject);
                 }
                 
-                
-                rb.velocity = Vector3.zero;
-                rb.isKinematic = true;//重力を無効化する。
-                modelObject.SetActive(false);//モデル表示を無効化する。
+                void HitToEnd()//何かしらに当たった後の移行処理
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.isKinematic = true;//重力を無効化する。
+                    modelObject.SetActive(false);//モデル表示を無効化する。
 
-                Stick_at();
+                    Stick_at();
+                }
             }
         }
         
@@ -142,24 +185,9 @@ public class Spell_PushLater : MonoBehaviour
 
     void ShellMode()
     {
-        /*
-        //レイキャストを使った接着地点取得。
-        Vector3 ori = gameObject.transform.position;
-        Ray ray = new Ray(ori, transform.forward);
-
-
-        int outMask = ~LayerMask.GetMask(new string[] { "Search", ownerTag });//所有者タグ名と同じレイヤーを除外。
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 30f, outMask))
-        {
-            if (hit.point == null) hitPos = Vector3.zero;
-            else if(hitPos != hit.point) hitPos = hit.point;
-        }
-        */
         //破壊までの時間。
         processTime += 1 * Time.deltaTime;
-        if(processTime >= 3)
+        if(processTime >= 3.0f)
         {
             Destroy(gameObject);
         }
@@ -169,12 +197,9 @@ public class Spell_PushLater : MonoBehaviour
     {
         hitSW = true;
 
-        
-        // if(hitPos != Vector3.zero) gameObject.transform.position = hitPos;//レイキャストの当たった位置に移動させる。
-
         if (hitObj.GetComponent<Rigidbody>() != null)//相手が重力に影響を受ける場合、その方向へ力を加える。
         {
-            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 40, ForceMode.Impulse);//相手を吹き飛ばす。
+            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 40, ForceMode.Impulse);//相手を吹き飛ばす。40
         }
         
         stickProcessTime = 0;//処理時間を０にする。
@@ -188,6 +213,8 @@ public class Spell_PushLater : MonoBehaviour
         {
             rootString = "Blast_Impact";//処理を変更。
         }
+
+        if (hitSM.hitPoint <= 0) Destroy(gameObject);// もし、時間内に当たった対象の体力が0になったら、
     }
 
     void Blast_Impact()//爆発処理。
@@ -199,7 +226,7 @@ public class Spell_PushLater : MonoBehaviour
             otherAS.PlayOneShot(blastSE);
 
             hitSM.St_Inflict_Shock(0.2f, 2);
-            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 200, ForceMode.Impulse);//相手を吹き飛ばす。
+            hitObj.GetComponent<Rigidbody>().AddForce(transform.forward * 300, ForceMode.Impulse);//相手を吹き飛ばす。200
         }
         else
         {

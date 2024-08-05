@@ -53,7 +53,7 @@ public class PlayerAdopt_Card : MonoBehaviour
         }
     }
 
-    public void AddCard_Conflict_Shield(int giveValue,int rollcount)//プレイヤーにカードを与える。(countには何回抽選するかを入れる必要がある。)
+    public void AddCard_Conflict_Shield(int giveValue,int rollcount)//プレイヤーにランダムなカードの選択権を与える。(countには何回抽選するかを入れる必要がある。)
     {
         giveValueInt = giveValue;
         if(chooseableCountInt == 0)
@@ -72,17 +72,18 @@ public class PlayerAdopt_Card : MonoBehaviour
     {
         chooseableCountInt -= 1;
         VisChoiceCountRefresh();//表記の更新。
-        //[試験状態]とりあえず最低限の抽選を行う処理。時間があれば内部レアリティに分けて抽選するようにする。
+
+        // 抽選を行う処理。poolCardDate_1はスタンダードカードのプール。
         int poolCD_MaxSizeInt_1 = conflictPCD.poolCardDate_1.Count;
+
         if (selectCardDate != null) selectCardDate.Clear();//すべて削除する。
 
         for (int i = 0; giveValueInt > i; i++)
         {
-            Debug.Log("ドロー！！！");
-            int rundomInt = Random.Range(0, poolCD_MaxSizeInt_1);
-            Debug.Log(conflictPCD.poolCardDate_1[rundomInt].spellName + selectCardDate.Count);
+            int rundomInt = Random.Range(0, poolCD_MaxSizeInt_1);//カードプールに含まれるカード枚数を最大値に設定し、無作為に数字を選出。
+            //Debug.Log(conflictPCD.poolCardDate_1[rundomInt].spellName + selectCardDate.Count);
 
-            selectCardDate.Add(conflictPCD.poolCardDate_1[rundomInt]);//conflict用のカードプールから1番プール(standard)の中から選出。それを格納する。
+            selectCardDate.Add(conflictPCD.poolCardDate_1[rundomInt]);// conflict用のカードプールから1番プール(standard)の中から選出。それを格納する。
         }
         playerGSW_input.pick_SpellDates = selectCardDate;//選出したカードデータをGSW側に移す。
         playerGSW_input.loadType = "SpellDate";//読み込みタイプをSpellDataに設定。
