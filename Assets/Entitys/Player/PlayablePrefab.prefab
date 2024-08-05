@@ -393,6 +393,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e4dad158-71d7-4307-a8bd-b51ac89df136
     m_ActionName: DynamicSelect/CancelButton[/Keyboard/backspace]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5441211727582410535}
+        m_TargetAssemblyTypeName: PlayerMoving, Assembly-CSharp
+        m_MethodName: ShiftDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7eb21d69-e6a2-421b-9b24-890f27683d7a
+    m_ActionName: Player/DoubleTapMove
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player

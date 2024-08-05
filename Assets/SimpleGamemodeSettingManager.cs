@@ -28,7 +28,7 @@ public class SimpleGamemodeSettingManager : MonoBehaviour
         stm = GetComponent<SceneTransitionManager>();
 
         stageNumberInt_min = 1;
-        stageNumberInt_max = 5;
+        stageNumberInt_max = 4;
         RefreshVisStageName();
         RefreshVisAddSubScMode();
     }

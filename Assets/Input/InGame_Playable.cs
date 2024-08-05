@@ -95,17 +95,6 @@ public partial class @InGame_Playable: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""8223e53a-24f5-4775-a7f3-52349a297ad0"",
-                    ""path"": ""<Gamepad>/dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""WASD"",
                     ""id"": ""d8d78a34-fd40-44f2-940f-ea8b59898f62"",
                     ""path"": ""2DVector"",

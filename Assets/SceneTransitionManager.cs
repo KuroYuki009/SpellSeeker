@@ -68,6 +68,7 @@ public class SceneTransitionManager : MonoBehaviour
         loadUI_Animator.SetTrigger("CutOut_Trigger");//アニメーションをカットアウトステートに移動。
         //ここで外部へ信号を送り、現シーン名から要素を発生させる。
         gameModeManager.currentSceneDate = stageProfileDate[loadStageNamber];//ゲームモードマネージャに現在のシーン名を流す。 
+
         gameModeManager.SceneEntryProcess();//インゲームマネージャーに信号を送る。
     }
 

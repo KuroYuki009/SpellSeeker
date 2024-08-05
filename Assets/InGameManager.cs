@@ -199,7 +199,7 @@ public class InGameManager : MonoBehaviour
 
                 Conflict_Classic_SetUp();//セットアップの処理を行う。
                 PlayerSpawnPoint_Snap();
-                BeforeStartingAnima();//Animationを再生させ、終点のイベントにスタートさせる。
+                BeforeStartingAnima();// Animationを再生させ、終点のイベントにスタートさせる。
             }
         }
     }
