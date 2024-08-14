@@ -26,7 +26,7 @@ UIに表示されている情報を [メゾット"HundWindowRefresh"](https://gi
 
 >#### ロックオンの維持
 
-ロックオンの維持には[メゾット"LockOnProcessing"](https://github.com/KuroYuki009/SpellSeeker/blob/develop/Assets/SpellsCard/HandCardManager.cs#L626-L680)で、対象となるオブジェクトとの間にrayを飛ばし、間に障害物がないか確認させている。<rb>
+ロックオンの維持には[メゾット"LockOnProcessing"](https://github.com/KuroYuki009/SpellSeeker/blob/develop/Assets/SpellsCard/HandCardManager.cs#L626-L680)で、対象となるオブジェクトとの間にrayを飛ばし、間に障害物がないか確認させている。<br>
 もし、間に何かが遮っている状況が一定時間立つとロックオンは解除されるようになっています。
 
 >#### ロックオンの解除
@@ -38,7 +38,7 @@ UIに表示されている情報を [メゾット"HundWindowRefresh"](https://gi
 
 >#### カード選択の申請
 
-[PlayerAdopt_Card.cs](Assets/Entitys/Player/Script/PlayerAdopt_Card.cs)では汎用選択ウィンドウ側と処理を返す事で、指定した回数分のカードを選択できるように出来ます。<rb>
+[PlayerAdopt_Card.cs](Assets/Entitys/Player/Script/PlayerAdopt_Card.cs)では汎用選択ウィンドウ側と処理を返す事で、指定した回数分のカードを選択できるように出来ます。<br>
 シールドデッキ戦に使われる申請用の[メゾット"AddCard_Conflict_Shield"](https://github.com/KuroYuki009/SpellSeeker/blob/develop/Assets/Entitys/Player/Script/PlayerAdopt_Card.cs#L56-L69)
 には引数を二つ指定する必要があり、それぞれ選択する事の出来る要素数と選択できる抽選回数を設定できます。
 
